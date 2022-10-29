@@ -1,0 +1,52 @@
+import PageLayout from '../layouts/PageLayout';
+import CodeEditor from '../components/CodeEditor';
+import ItalicTitle from '../components/ItalicTitle';
+import { PostCards } from '../components/Card';
+import { intrParcticeArr } from '../practice/index';
+
+export const meta = {};
+
+<ItalicTitle>了解如何释放 TypeScript 图灵完备**类型系统**的全部潜力！</ItalicTitle>
+
+# 引言
+
+**Type-level TypeScript** 是一门**在线课程**，可将您的 TypeScript 技能从**中级提升到高级**。它将让您深入了解类型系统的基础知识，并指导您了解其最高级的功能。您将找到成为真正的 **TypeScript Pro** 所需的一切——不仅是**深入的内容**，还有练习新技能的**有趣挑战**，就像这里的这个。
+
+让我们看看你能不能解决它！
+
+<CodeEditor
+  height={225}
+  defaultValue={[intrParcticeArr[0], intrParcticeArr[1]]}
+/>
+
+多年来，TypeScript 的**类型系统**已经从基本的类型注解发展成为一种**庞大而复杂**的编程语言。如果您曾经查看过开源库的代码，您可能会发现看起来令人生畏和陌生的类型，就像来自另一个星球的某种深奥的语言。开源库的代码通常比我们习惯编写的代码更抽象；这也是它为什么广泛使用高级 TypeScript 特性，例如**泛型**、**条件类型**、**映射类型**甚至**递归类型**。在开发 [TS-Pattern](https://github.com/gvergnaud/ts-pattern) 时，我深入研究了这些概念。 TS-Pattern 是一个代码极度复杂的开源库。在这门课程中，我希望分享给你，我通过阅读大量源代码和对对类型系统进行数百小时的修修改改后，所学到的东西。
+
+类型有多方面的**好处**:
+
+- 类型给代码提供**文档**。
+- 类型提供明智的建议给开发者，让他们变得更加**熟练**。
+- 类型能方便的发现错误和错别字。
+
+类型系统了解你的代码越多，**它就能帮您更多**！一旦你掌握了类型语言，**一切都皆有可能**。您将不再觉得类型系统限制了您编写所需抽象的能力。
+
+想检查你的路由参数是否正确传递？**这里有一个例子**：
+
+<CodeEditor height={350} defaultValue={intrParcticeArr[2]} />
+
+<ItalicTitle>这**不是**魔法。类型系统是一种**真正的**编程语言！</ItalicTitle>
+
+为了在这方面做得更好，我们首先需要承认 **TypeScript 的类型系统本身就是一种成熟的编程语言**！学习它的基础知识是非常值得的，正如我们学习任何其他新的编程语言一样。在整个课程期间，我将尝试说明类型系统和您已经知道的编程概念之间的对应关系，例如**代码分支**、**变量赋值**、**循环**和**数据结构**，以及它们的 type-level 等价物。通过组装这些基础模块，你将有能力创建强大的 **type-level 算法**，来确保你的抽象在整个代码库里被正确使用了。
+
+<ItalicTitle>让我们将您的 TypeScript 技能提升到一个新的水平！</ItalicTitle>
+
+<PostCards />
+
+最后，我们会意识到，把代码的复杂性迁移到类型系统里，并不总是可取的，它是一种折衷方案。我们将会论编译时**性能**、类型**错误**、类型级**调试**和 type-level 编程中面临的其他挑战。我希望这能帮助你在使用这些技术时进行思考并做出正确的决定。
+
+值得注意的是，本课程不是 TypeScript 技巧的集合！我相信建立一个良好的基础心智模型更有用，因为它可以帮助**解决**我们**没有覆盖到的问题**。了解一些技巧只能让你向前走一些，但掌握语言的基础模块以及它们相互作用的方式才能使你解决实际的问题。
+
+让我们开始吧！
+
+export default ({ children }) => (
+  <PageLayout meta={meta}>{children}</PageLayout>
+);

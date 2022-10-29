@@ -1,0 +1,113 @@
+import PageLayout from '../layouts/PageLayout';
+import CodeEditor from '../components/CodeEditor';
+import ItalicTitle from '../components/ItalicTitle';
+import { PostCards } from '../components/Card';
+import { tavParcticeArr } from '../practice/index';
+
+export const meta = {};
+
+<ItalicTitle>类型和值</ItalicTitle>
+
+# 引言
+
+首先，让我们对**值**的语言和**类型**的语言进行一个重要的区分。**值**的语言让我们可以编写在生产环境中运行的代码，并为我们的用户做有用的事情。然而，在代码到达我们的用户之前，**类型**的语言就被完全删除了。它只是为了帮助 TypeScript 在我们发布之前确保代码不包含错误。
+
+让我们看看你能不能解决它！
+
+**JavaScript** 没有类型，所以自然所有的 JavaScript 都是 value-level1 代码：
+
+<CodeEditor height={120} defaultValue={tavParcticeArr[0]} />
+
+**TypeScript**允许我们在 JavaScript 中添加类型注释，并确保我们编写的 sumByTS 函数被调用时只能传入*number*类型的参数：
+
+<CodeEditor height={120} defaultValue={tavParcticeArr[1]} />
+
+但 TypeScript 的类型系统比它强大得多。我们编写的真实代码有时需要是**泛型**的，并且有可能我们在编写前并不知道具体的类型。
+
+在这种情况下，我们可以在尖括号\<A,B,...\>中定义类型参数，并将它们分配给具有 a：A 的值参数。然后，我们可以将类型参数传递给类型级函数，该函数根据输入类型计算输出类型：
+
+<CodeEditor height={140} defaultValue={tavParcticeArr[2]} />
+
+**这就是类型级编程！** DoSomething\<A，B\>是用一种特殊的编程语言编写的类型级函数，它与我们用于值的语言不同，但同样强大。我们称这种语言为类型级类型脚本。
+
+<CodeEditor height={140} defaultValue={tavParcticeArr[3]} />
+
+## 类型的语言
+
+**类型级 TypeScript** 是一种最小的、纯功能的语言。
+
+该定义中的 "功能 "一词指的是功能编程，这个概念你可能已经听说过了。类型级 TypeScript 是功能性的，仅仅是因为函数是这种语言的主要抽象手段。我们将一直使用函数。
+
+在类型层面，函数被称为通用类型：它们接受一个或几个类型参数，并返回一个单一的输出类型。下面是一个简单的例子：一个函数接受两个类型参数，并把它们包装成一个元组：
+
+<CodeEditor height={220} defaultValue={tavParcticeArr[4]} />
+
+类型级 TypeScript 没有太多的功能。毕竟它是专门为你的编写而设计的! 也就是说，它确实有足够的功能来(几乎)实现 (图灵完备性)[https://github.com/microsoft/TypeScript/issues/14833] ，这意味着你可以用它解决任意复杂的问题。
+
+以下是使用类型级别 TypeScript 可以做的一些事情：
+
+- **代码分支**：根据条件（相当于值级别的 if/else 关键字）执行不同的代码路径。
+- **变量赋值**：声明一个变量并在表达式中使用它（相当于值级别的 var/let 关键字）。
+- **函数**：可重用的逻辑位，如我们在上一个示例中看到的。
+- **循环**：通常通过递归。
+- **相等检查**：==，对于类型！
+- 还有更多！
+
+以下是一些你不能做的事情：
+
+- **无可变状态**：不能在类型级别将变量重新分配给新值。
+- **无输入/输出**：您不能执行副作用，例如将某些内容记录到控制台、读取文件或在类型级别发出 HTTP 请求。这是幸运的：我真的不希望我的打字系统读取我的文件并将它们发送到某个服务器！
+- **无高阶函数**：不能将函数传递给类型级别 TypeScript 中的另一个函数。这是价值层面上非常常见的模式。例如，.map、.filter 和.reduce 是高阶函数。这意味着我们将无法在类型级别实现这些。实际上，这种限制并没有那么糟糕，因为类型级算法通常更简单。
+
+这是我们将在接下来的章节中学习的语言的简要概述。现在，让我们跳到我们的第一个挑战！
+
+## 挑战练习
+
+在每一章的末尾，你将有几个挑战需要解决，以将你的新技能付诸实践。它们看起来是这样的：
+
+<CodeEditor height={200} defaultValue={tavParcticeArr[5]} />
+
+**命名空间（namespace）** 是一个不太知名的 TypeScript 特性，它让我们在一个专门的范围内隔离每个挑战。
+
+**TODO** 是一个占位符。这是你需要替换的东西!
+
+**type res1 = ...** 是你的泛型对某个输入类型返回的类型。你可以用鼠标悬停它来检查其当前值。
+
+**type test1 = Expect\<Equal\<res1, ...\>\>** 是一个类型级单元测试。它不会进行类型检查，直到你找到正确的解决方案。
+当我想检查无效的输入是否被类型检查器拒绝时，我有时会使用 **@ts-expect-error** 注释。**@ts-expect-error** 只在下一行没有类型检查的情况下进行类型检查!
+
+<CodeEditor height={200} defaultValue={tavParcticeArr[6]} />
+
+## 挑战
+
+第一题：
+
+<CodeEditor
+  height={500}
+  defaultValue={[tavParcticeArr[7], tavParcticeArr[8]]}
+/>
+
+第二题：
+
+<CodeEditor
+  height={500}
+  defaultValue={[tavParcticeArr[9], tavParcticeArr[10]]}
+/>
+
+第三题：
+
+<CodeEditor
+  height={500}
+  defaultValue={[tavParcticeArr[11], tavParcticeArr[12]]}
+/>
+
+第四题：
+
+<CodeEditor
+  height={500}
+  defaultValue={[tavParcticeArr[13], tavParcticeArr[14]]}
+/>
+
+export default ({ children }) => (
+  <PageLayout meta={meta}>{children}</PageLayout>
+);
