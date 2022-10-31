@@ -39,7 +39,7 @@ const OL = (props: any) => {
 };
 
 const LI = (props: any) => {
-  return <li className="text-lg my-2" {...props} />;
+  return <li className="x-text text-lg my-2" {...props} />;
 };
 const A = (props: any) => {
   return <a className="underline" {...props} />;

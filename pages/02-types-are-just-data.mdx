@@ -74,12 +74,27 @@ type DataStructures =
   | number[]; // arrays
 ```
 
-- **Object** 类型用一组有限的健来描述对象，这些键可能包含可不同类型的值。
-- **Record** 类型和对象类型相似，不同之处在于它描述拥有未知数量的健的对象，并且所有健的值的类型都是相同的。比如，在`{ [key: string]: number }`里，所有值类型都是 number 。
-- Tuple types describe arrays with a fixed length. They can have a different type for each index.
-- Array types describe arrays with an unknown length. Just like with records, all values share the same type.
+- **Object** 类型用于描述一组有限健值的对象，这些键可能包含不同类型的值。
+- **Record** 类型和 **Object** 类型相似，不同之处在于它描述拥有未知数量的健值的对象，并且所有健的值的类型都是相同的。比如，在`{ [key: string]: number }`里，所有值类型都是 number 。
+- **Tuple** 类型用于描述固定长度的数组，每个索引可以对应不同的值。
+- **Array** 类型用于描述长度不定的数组，和 **Record** 类型一样，其中所有的值都是相同类型的。
 
-### 联合类型
+在接下来的章节中，我们将花更多时间学习它们。
+
+### 联合类型和交叉类型
+
+Everything we have seen so far looks somewhat similar to concepts we are used to at the value level, but unions and intersections are different. They are really specific to the type level, and building a good mental model of how they work is essential, although a little more challenging.
+
+到目前为止，我们所看到的一切都与 value-level 中所用到的概念相似，但是联合类型和交叉类型不一样。它们只存在于 type-level 世界，建立一个良好的心智模型来学习它们是非常重要的，尽管这充满着挑战。
+
+它们看起来像这样：
+
+```ts
+type Union = X | Y;
+
+type Intersection = X & Y;
+```
+
 
 ### 交集类型
 
