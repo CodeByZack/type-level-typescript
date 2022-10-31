@@ -419,7 +419,9 @@ pre[class*='language-'] {
   overflow: auto;
   height: auto;
 }
-
+pre[class*=language-] {
+  margin: 2.5em 0;
+}
 :not(pre) > code[class*='language-'],
 pre[class*='language-'] {
   background: var(--background);
