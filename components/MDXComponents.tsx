@@ -35,7 +35,7 @@ const UL = (props: any) => {
 };
 
 const OL = (props: any) => {
-  return <ul className="x-text text-lg list-decimal ml-10" {...props} />;
+  return <ol className="x-text text-lg list-decimal ml-10" {...props} />;
 };
 
 const LI = (props: any) => {
@@ -55,6 +55,7 @@ const MDXComponents = {
   li: LI,
   a: A,
   wrapper: ({ children, ...props }) => {
+    console.log("wrapper");
     const updatedChildren = children.map((child) => {
       if (child.props.className === 'footnotes') {
         // Since we only have one element that will ever match this

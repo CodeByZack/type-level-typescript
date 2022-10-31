@@ -431,6 +431,15 @@ pre[class*='language-'] {
   white-space: normal;
 }
 
+.x-text:not(pre) code {
+  border-radius: .3em;
+  background-color: var(--color-inline-code-bg);
+  color: var(--color-inline-code-text);
+  padding: .15em .3em .1em;
+  white-space: normal;
+  font-size: 90%
+}
+
 .x-editor {
   position: relative;
   --editor-overflow-x: 16px;

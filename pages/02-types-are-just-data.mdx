@@ -58,18 +58,26 @@ const hundred: 20 = 100;
 
 字面量类型有无数种，它们看起来就像普通的值，但是不要搞混了，它们都是类型！
 
-Values and types belong to two different worlds — they exist separately and can't be mixed together in a single expression1. I find it helpful to see literal types as a sort of reflection of values in the world of types, but we need to keep in mind that they are different things. One notable difference is that we can't write arithmetic expressions at the type level. For instance type five = 2 + 3 won't work, even if const five = 2 + 3 is perfectly valid.
+**值和类型属于两个完全不同的世界** —— 他们彼此独立存在，在单个表达式里不能被混在一起[^1]。 我发现，如果我们将字面量类型视为类型世界里值的一种映射，将会很有帮助。但是需要时刻记住，类型和值它们是不同的东西。一个显著的区别是，我们无法在 type-level 书写数学表达式。比如，`type five = 2 + 3` 是完全无效的，但是 `const five = 2 + 3` 是完全有效的。
 
-值和类型属于两个完全不同的世界 —— 他们彼此独立存在，在单个表达式里不能被混在一起[^1]。 
-
-
-
-
-Literal types become particularly useful when put in unions to describe variables that only contain a finite set of possible values like type TrafficLight = "green" | "orange" | "red".
-
-
+当放在联合类型中来描述一组有限可能的类型时，字面量类型非常有用，比如 `type TrafficLight = "green" | "orange" | "red"` 。
 
 ### 数据结构类型
+
+在 type-level 世界里，我们拥有四种内置的数据结构可供使用：**objects**, **records**, **tuples** and **arrays**。
+
+```ts
+type DataStructures =
+  | { key1: boolean; key2: number } // objects
+  | { [key: string]: number } // records
+  | [boolean, number] // tuples
+  | number[]; // arrays
+```
+
+- **Object** 类型用一组有限的健来描述对象，这些键可能包含可不同类型的值。
+- **Record** 类型和对象类型相似，不同之处在于它描述拥有未知数量的健的对象，并且所有健的值的类型都是相同的。比如，在`{ [key: string]: number }`里，所有值类型都是 number 。
+- Tuple types describe arrays with a fixed length. They can have a different type for each index.
+- Array types describe arrays with an unknown length. Just like with records, all values share the same type.
 
 ### 联合类型
 
