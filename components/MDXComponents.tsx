@@ -1,4 +1,5 @@
-import Footnotes from "./Footnotes";
+import Image from 'next/image';
+import Footnotes from './Footnotes';
 
 const H1 = (props: any) => {
   return (
@@ -45,6 +46,10 @@ const A = (props: any) => {
   return <a className="underline" {...props} />;
 };
 
+const Img = (props: any) => {
+  return <img className="mx-auto my-14" {...props} />;
+};
+
 const MDXComponents = {
   h1: H1,
   h2: H2,
@@ -54,8 +59,9 @@ const MDXComponents = {
   ol: OL,
   li: LI,
   a: A,
+  img: Img,
   wrapper: ({ children, ...props }) => {
-    console.log("wrapper");
+    console.log('wrapper');
     const updatedChildren = children.map((child) => {
       if (child.props.className === 'footnotes') {
         // Since we only have one element that will ever match this
