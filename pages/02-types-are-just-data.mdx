@@ -111,6 +111,19 @@ TypeScript 的一个有趣特性是一个值可以属于多个类型。例如，
 
 ![1](./img/02-types-are-just-data/1.svg)
 
+我们说 `“Hi”` 和 `“Hello”` 是 `string` 的子类型，而 `string` 是它们的超类型。这意味着您可以将 `“Hi”` 或 `“Hello”` 类型的变量分配给 `string` 类型的变量，但反过来不行：
+
+```ts
+let hi: "Hi" = "Hi";
+let hello: "Hello" = "Hello";
+
+let greeting: string;
+
+greeting = hi; // ✅ type-checks!
+greeting = hello; // ✅ type-checks!
+
+hello = greeting; // ❌ doesn't type-check!
+```
 
 ## 脚注
 
