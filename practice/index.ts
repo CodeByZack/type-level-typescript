@@ -7,7 +7,7 @@ const spliter = '// ==============================================';
 
 const splitPracticeStr = (str: string) => {
   const arr = str.split(spliter).map((s) => s.replace(/^\s+|\s+$/g, ''));
-  console.log(arr);
+  // console.log(arr);
   return arr;
 };
 

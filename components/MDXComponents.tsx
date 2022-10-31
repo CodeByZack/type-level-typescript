@@ -1,3 +1,5 @@
+import Footnotes from "./Footnotes";
+
 const H1 = (props: any) => {
   return (
     <h1
@@ -32,6 +34,10 @@ const UL = (props: any) => {
   return <ul className="list-disc ml-10 text-lg" {...props} />;
 };
 
+const OL = (props: any) => {
+  return <ul className="x-text text-lg list-decimal ml-10" {...props} />;
+};
+
 const LI = (props: any) => {
   return <li className="text-lg my-2" {...props} />;
 };
@@ -45,8 +51,20 @@ const MDXComponents = {
   h3: H3,
   p: P,
   ul: UL,
+  ol: OL,
   li: LI,
   a: A,
+  wrapper: ({ children, ...props }) => {
+    const updatedChildren = children.map((child) => {
+      if (child.props.className === 'footnotes') {
+        // Since we only have one element that will ever match this
+        // the key doesn't matter, but react will yell without a key.
+        return <Footnotes key={1} {...child.props} />;
+      }
+      return child;
+    });
+    return <>{updatedChildren}</>;
+  },
   // pre: Pre,
   // code: InlineCode,
 };

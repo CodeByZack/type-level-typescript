@@ -241,6 +241,10 @@ body {
   color: var(--yellow);
 }
 
+.token.constant {
+  color: var(--foreground);
+}
+
 .token.boolean {
   color: var(--purple);
 }
@@ -250,6 +254,10 @@ body {
 }
 
 .token.class-name {
+  color: var(--cyan);
+}
+
+.token.maybe-class-name {
   color: var(--cyan);
 }
 

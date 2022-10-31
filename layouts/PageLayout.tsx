@@ -12,6 +12,8 @@ const PageLayout = (props: {
 }) => {
   const { children, next, prev } = props;
 
+  console.log(children);
+
   return (
     <MDXProvider components={MDXComponents}>
       <DrawerLayout

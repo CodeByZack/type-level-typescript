@@ -60,7 +60,9 @@ const hundred: 20 = 100;
 
 Values and types belong to two different worlds — they exist separately and can't be mixed together in a single expression1. I find it helpful to see literal types as a sort of reflection of values in the world of types, but we need to keep in mind that they are different things. One notable difference is that we can't write arithmetic expressions at the type level. For instance type five = 2 + 3 won't work, even if const five = 2 + 3 is perfectly valid.
 
-值和类型属于两个完全不同的世界 —— 他们彼此独立存在，在单个表达式里不能被混在一起<sup>[1](#user-content-fn-1)</sup>。
+值和类型属于两个完全不同的世界 —— 他们彼此独立存在，在单个表达式里不能被混在一起[^1]。 
+
+
 
 
 Literal types become particularly useful when put in unions to describe variables that only contain a finite set of possible values like type TrafficLight = "green" | "orange" | "red".
@@ -73,6 +75,14 @@ Literal types become particularly useful when put in unions to describe variable
 
 ### 交集类型
 
+
+
+## 脚注
+
+[^1]: This is true in TypeScript, but some languages do allow mixing values and types together in the same expression and the line between the world of values and the world of types becomes blurrier. They are called "dependent" type systems.
+
+
+[^2]: Intersecting two object types is not exactly like merging two objects with `{...a, ...b}`, the way we would in JavaScript, because the intersection is applied recursively on keys that exist on both object types. We will learn more about intersections of objects in the next chapter.
 
 export default ({ children }) => (
   <PageLayout meta={meta}>{children}</PageLayout>

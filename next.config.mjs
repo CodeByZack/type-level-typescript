@@ -1,12 +1,13 @@
 /** @type {import('next').NextConfig} */
 import withMDX from '@next/mdx';
 import mdxPrism from 'mdx-prism';
+import remarkGfm from 'remark-gfm';
 // import rehypeHighlight from 'rehype-highlight';
 
 const MDX = withMDX({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [],
+    remarkPlugins: [remarkGfm],
     rehypePlugins: [mdxPrism],
     // If you use `MDXProvider`, uncomment the following line.
     providerImportSource: '@mdx-js/react',
