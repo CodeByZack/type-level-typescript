@@ -9,8 +9,16 @@ const H1 = (props: any) => {
 
 const H2 = (props: any) => {
   return (
-    <h1
+    <h2
       className="relative x-text font-black leading-normal text-3xl mt-16 mb-6"
+      {...props}
+    />
+  );
+};
+const H3 = (props: any) => {
+  return (
+    <h3
+      className="relative x-text font-black leading-normal text-2xl mt-12 mb-6"
       {...props}
     />
   );
@@ -34,6 +42,7 @@ const A = (props: any) => {
 const MDXComponents = {
   h1: H1,
   h2: H2,
+  h3: H3,
   p: P,
   ul: UL,
   li: LI,

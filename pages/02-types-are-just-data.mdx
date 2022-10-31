@@ -11,42 +11,68 @@ export const meta = {};
 
 每种编程语言都是关于**转换数据**的，Type-level TypeScript 也不例外。与其他编程语言的主要区别在于我们的数据是**类型**！我们编写将类型作为输入并输出一些其他类型的程序。
 
-Mastering this language will require a solid understanding of the specificities of its different kinds of data and data structures. In the next few chapters, we'll get to know them and see how they relate to the concepts we use at the value level but also how they differ from them. Let's get started!
+掌握这门语言需要你深入的理解它的不同数据和不同数据结构的特性。在接下来几章中，我们将学习它们并了解它们与我们常用的 value-level 的概念之间的关联。让我们开始吧！
 
-让我们看看你能不能解决它！
+## 五种类型
 
-<CodeEditor
-  height={225}
-  defaultValue={[intrParcticeArr[0], intrParcticeArr[1]]}
-/>
+TypeScript 提供了五种主要的类型：**基础**类型、**字面量**类型、**数据结构**类型、**联合**类型和**交集**类型。
 
-多年来，TypeScript 的**类型系统**已经从基本的类型注解发展成为一种**庞大而复杂**的编程语言。如果您曾经查看过开源库的代码，您可能会发现看起来令人生畏和陌生的类型，就像来自另一个星球的某种深奥的语言。开源库的代码通常比我们习惯编写的代码更抽象；这也是它为什么广泛使用高级 TypeScript 特性，例如**泛型**、**条件类型**、**映射类型**甚至**递归类型**。在开发 [TS-Pattern](https://github.com/gvergnaud/ts-pattern) 时，我深入研究了这些概念。 TS-Pattern 是一个代码极度复杂的开源库。在这门课程中，我希望分享给你，我通过阅读大量源代码和对对类型系统进行数百小时的修修改改后，所学到的东西。
+### 基础类型
 
-类型有多方面的**好处**:
+你肯定已经非常熟悉基础类型了。我们一直使用它们来注释我们日常 TypeScript 代码中的变量和函数。以下是原始类型的列表：
 
-- 类型给代码提供**文档**。
-- 类型提供明智的建议给开发者，让他们变得更加**熟练**。
-- 类型能方便的发现错误和错别字。
+```ts
+type Primitives =
+  | number
+  | string
+  | boolean
+  | symbol
+  | bigint
+  | undefined
+  | null;
+```
 
-类型系统了解你的代码越多，**它就能帮您更多**！一旦你掌握了类型语言，**一切都皆有可能**。您将不再觉得类型系统限制了您编写所需抽象的能力。
+JavaScript 里除了对象和函数以外的其他值，都属于基础类型。某些基础类型拥有无限个值，像 number 和 string ，但是其中 null 和 undefined 类型只拥有一个值。 这些特性同时造就了我们第二种类型：**字面量类型**。
 
-想检查你的路由参数是否正确传递？**这里有一个例子**：
+### 字面量类型
 
-<CodeEditor height={350} defaultValue={intrParcticeArr[2]} />
 
-<ItalicTitle>这**不是**魔法。类型系统是一种**真正的**编程语言！</ItalicTitle>
+字面量类型是“精确”类型，只包含**一个可能的值**。
 
-为了在这方面做得更好，我们首先需要承认 **TypeScript 的类型系统本身就是一种成熟的编程语言**！学习它的基础知识是非常值得的，正如我们学习任何其他新的编程语言一样。在整个课程期间，我将尝试说明类型系统和您已经知道的编程概念之间的对应关系，例如**代码分支**、**变量赋值**、**循环**和**数据结构**，以及它们的 type-level 等价物。通过组装这些基础模块，你将有能力创建强大的 **type-level 算法**，来确保你的抽象在整个代码库里被正确使用了。
+```ts
+type Literals =
+  | 20
+  | "Hello"
+  | true
+  | 10000n
+  /* | ... */;
+```
 
-<ItalicTitle>让我们将您的 TypeScript 技能提升到一个新的水平！</ItalicTitle>
+类型为20的变量只能被赋值为20，类型为 "Hello" 的变量只能被赋值为 "Hello"，等等。
 
-<PostCards />
+```ts
+const twenty: 20 = 20; // ✅ works!
+const hundred: 20 = 100;
+//          ^ ❌ `100` isn't assignable to the type `20`.
+```
 
-最后，我们会意识到，把代码的复杂性迁移到类型系统里，并不总是可取的，它是一种折衷方案。我们将会论编译时**性能**、类型**错误**、类型级**调试**和 type-level 编程中面临的其他挑战。我希望这能帮助你在使用这些技术时进行思考并做出正确的决定。
+字面量类型有无数种，它们看起来就像普通的值，但是不要搞混了，它们都是类型！
 
-值得注意的是，本课程不是 TypeScript 技巧的集合！我相信建立一个良好的基础心智模型更有用，因为它可以帮助**解决**我们**没有覆盖到的问题**。了解一些技巧只能让你向前走一些，但掌握语言的基础模块以及它们相互作用的方式才能使你解决实际的问题。
+Values and types belong to two different worlds — they exist separately and can't be mixed together in a single expression1. I find it helpful to see literal types as a sort of reflection of values in the world of types, but we need to keep in mind that they are different things. One notable difference is that we can't write arithmetic expressions at the type level. For instance type five = 2 + 3 won't work, even if const five = 2 + 3 is perfectly valid.
 
-让我们开始吧！
+值和类型属于两个完全不同的世界 —— 他们彼此独立存在，在单个表达式里不能被混在一起<sup>[1](#user-content-fn-1)</sup>。
+
+
+Literal types become particularly useful when put in unions to describe variables that only contain a finite set of possible values like type TrafficLight = "green" | "orange" | "red".
+
+
+
+### 数据结构类型
+
+### 联合类型
+
+### 交集类型
+
 
 export default ({ children }) => (
   <PageLayout meta={meta}>{children}</PageLayout>
