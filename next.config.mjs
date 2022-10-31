@@ -17,5 +17,14 @@ const MDX = withMDX({
 const config = MDX({
   // Append the default value with md extensions
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+  redirects : ()=>{
+    return [
+      {
+        source: '/',
+        destination: '/00-introduction',
+        permanent: true,
+      },
+    ]
+  }
 });
 export default config;

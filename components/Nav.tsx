@@ -38,7 +38,7 @@ const Nav = () => {
         </h2>
         <ul className="flex-col flex-wrap gap-5 font-black x-font-sans text-md sidebar_sidebarList">
           {PostArrary.map((n, i) => (
-            <NavItem {...n} index={i} />
+            <NavItem {...n} key={n.link} index={i} />
           ))}
         </ul>
       </div>
