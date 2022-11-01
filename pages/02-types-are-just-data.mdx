@@ -284,8 +284,6 @@ function someFunction(input: WithName & WithAge) {
 
 ## `never` — 空集
 
-The type never doesn't contain any value, so we can use it to represent values that should never exist at runtime. For instance, a function that always throws will return a value of type never:
-
 `never` 类型不包含任何值，因此我们可以使用它来表示在运行时不应该存在的值。例如，一个总是抛出异常的函数将返回一个 `never` 类型的值：
 
 ```ts
@@ -310,9 +308,7 @@ const age: number = panic(); // ✅ And with this.
 const theUniverse: unknown = panic(); // ✅ Actually, this will always work.
 ```
 
-If you put never in a union with an existing union type, it leaves it unchanged:
-
-如果您将 never 放入具有现有联合类型的联合中，则它保持不变：
+如果你在联合类型中使用 `never`，则什么也不会改变：
 
 ```ts
 type U = "Hi" | "Hello" | never;
@@ -320,6 +316,7 @@ type U = "Hi" | "Hello" | never;
 type U = "Hi" | "Hello";
 ```
 
+![14](./img/02-types-are-just-data/14.svg)
 
 
 ## 脚注
