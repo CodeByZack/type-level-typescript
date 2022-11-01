@@ -205,6 +205,54 @@ trafficLight = canCross; // ✅
 
 ## `unknown` — 所有类型的超集
 
+`unknown` 包含了你在 Typescript 中使用的所有类型。
+
+![8](./img/02-types-are-just-data/8.svg)
+
+您可以将任何内容分配给 `unknown` 类型的变量：
+
+```ts
+let something: unknown;
+
+something = "Hello";            // ✅
+something = 2;                  // ✅
+something = { name: "Alice" };  // ✅
+something = () => "?";          // ✅
+```
+
+这很不错，但是这也意味着你不能对类型为 `unkown` 的变量做很很多其它操作，因为 Typescript 并不知道它包含了什么值！
+
+```ts
+let something: unknown;
+
+something = "Hello";
+something.toUpperCase();
+//       ^ ❌ Property 'toUpperCase' does not exist
+//            on type 'unknown'.
+```
+
+任何类型 `A` 与 `unkown` 类型进行合并，总是会得到 `unkown` 类型。这是合理的，因为根据定义，类型 `A` 肯定包含在 `unkown` 里：
+
+```ts
+A | unknown = unknown
+```
+
+![9](./img/02-types-are-just-data/9.svg)
+
+但是如果取交集呢？
+
+任何类型 `A` 和 `unkown` 类型进行交集运算会得到类型 `A`：
+
+```ts
+A & unknown = A
+```
+
+那是因为将集合 `A` 与集合 `B` 相交意味着提取 `A` 中也属于 `B` 的部分！由于任何类型 `A` 都在 `unknown` 内部，因此 `A & unknown` 就是 `A`。
+
+![10](./img/02-types-are-just-data/10.svg)
+
+## Intersections
+
 ## 脚注
 
 [^1]: This is true in TypeScript, but some languages do allow mixing values and types together in the same expression and the line between the world of values and the world of types becomes blurrier. They are called "dependent" type systems.
