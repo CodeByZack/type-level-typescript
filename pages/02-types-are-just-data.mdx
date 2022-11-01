@@ -274,8 +274,15 @@ function someFunction(input: WithName & WithAge) {
 }
 ```
 
-But what happens if we try to intersect two types that do not overlap at all? What does it even mean to intersect string and number for instance?
+但是，如果我们尝试将两种完全不重叠的类型相交会发生什么？例如，将 `string` 和 `number` 相交意味着什么？
 
+![13](./img/02-types-are-just-data/13.svg)
+
+看起来 `string & number` 会给我们带来某种类型错误，但事实上，这对类型检查器来说很重要！不重叠的相交类型的结果是**空集**。一个**不包含任何东西的集合**。
+
+在 TypeScript 中，空集被称为 `never`。
+
+## `never` — 空集
 
 ## 脚注
 
