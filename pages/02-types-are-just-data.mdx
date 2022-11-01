@@ -296,15 +296,30 @@ function panic(): never {
 const oops: never = panic();
 ```
 
-That's because the code using oops can never be reached!
+那是因为永远无法执行到使用 `oops` 的代码！
 
-That's good to know, but never doesn't sound very useful in practice, don't you think?
+很高兴知道这点，但是在实践中 `never` 听起来好像没什么用，你不觉得嘛？
 
-You would be surprised! We use never all the time when writing type-level code. never is essentially an empty union type. Having an empty type is immensely useful for type-level logic. We will use it to remove keys from object types, filter out items from a union, represent impossible cases, etc.
+你肯定会感觉到惊讶！我们书写 type-level 代码时，**无时无刻**都在使用 `never`。 `never` 本质上是一个**空的联合类型**。拥有一个空类型对于编写 type-level 的逻辑非常有用。我们可以用它从对象类型中删除键，从联合类型中过滤不需要的类型，以及表示不肯能存在的情况，等等。
 
-An interesting property of never is that it's a subtype of every other types — it's at the very bottom of our hierarchy of sets. That means you can assign a value of type never to any other type:
+`never` 有一个有趣的特性，它是所有类型的子类型 —— 它位于集合嵌套层级的最底部。那也就意味着你可以将 `never` 类型的值赋值给其它任何类型：
 
-Edit
+```ts
+const username: string = panic(); // ✅ TypeScript is ok with this!
+const age: number = panic(); // ✅ And with this.
+const theUniverse: unknown = panic(); // ✅ Actually, this will always work.
+```
+
+If you put never in a union with an existing union type, it leaves it unchanged:
+
+如果您将 never 放入具有现有联合类型的联合中，则它保持不变：
+
+```ts
+type U = "Hi" | "Hello" | never;
+// is equivalent to:
+type U = "Hi" | "Hello";
+```
+
 
 
 ## 脚注
