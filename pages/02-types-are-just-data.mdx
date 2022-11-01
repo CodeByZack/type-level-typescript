@@ -177,7 +177,33 @@ shouldStop = canCross;
 
 ![5](./img/02-types-are-just-data/5.svg)
 
-We can join any 2 sets together, including other union types! For example, we can join CanCross and ShouldStop from the previous example into a TrafficLight union type:
+我们可以将任意两个集合合并，包括其它的联合类型！例如，我们可以将上一个示例中的 `CanCross` 和 `ShouldStop` 合并为 `TrafficLight` 类型：
+
+![6](./img/02-types-are-just-data/6.svg)
+
+```ts
+// this is equivalent to "green" | "orange" | "red"
+type TrafficLight = CanCross | ShouldStop;
+
+let canCross: CanCross = "green";
+let shouldStop: ShouldStop = "red";
+
+let trafficLight: TrafficLight;
+trafficLight = shouldStop; // ✅
+trafficLight = canCross; // ✅
+```
+
+`TrafficLight` 类型是 `CanCross` 和 `ShouldStop` 的**超集**。需要注意， `"orange"` 在 `TrafficLight` 类型中只有一个。这是因为集合类型不能出现重复项，所以联合类型也不能包含重复项。
+
+联合类型有助于创建明确的类型的**嵌套层次结构**。并且我们总是可以将两种类型放在一个联合类型中，因此我们可以创建任意数量的子类型级别：
+
+![7](./img/02-types-are-just-data/7.svg)
+
+此时，你可能会想，如果所有类型都可以属于其他类型，那么这种嵌套类型的层次结构往上到哪里为止呢？有没有一种终极类型，包含了**所有其它的类型**？
+
+嗯，有这样一种类型，它叫 `unkown` 。
+
+## `unknown` — 所有类型的超集
 
 ## 脚注
 
