@@ -284,6 +284,29 @@ function someFunction(input: WithName & WithAge) {
 
 ## `never` — 空集
 
+The type never doesn't contain any value, so we can use it to represent values that should never exist at runtime. For instance, a function that always throws will return a value of type never:
+
+`never` 类型不包含任何值，因此我们可以使用它来表示在运行时不应该存在的值。例如，一个总是抛出异常的函数将返回一个 `never` 类型的值：
+
+```ts
+function panic(): never {
+  throw new Error("🙀");
+}
+
+const oops: never = panic();
+```
+
+That's because the code using oops can never be reached!
+
+That's good to know, but never doesn't sound very useful in practice, don't you think?
+
+You would be surprised! We use never all the time when writing type-level code. never is essentially an empty union type. Having an empty type is immensely useful for type-level logic. We will use it to remove keys from object types, filter out items from a union, represent impossible cases, etc.
+
+An interesting property of never is that it's a subtype of every other types — it's at the very bottom of our hierarchy of sets. That means you can assign a value of type never to any other type:
+
+Edit
+
+
 ## 脚注
 
 [^1]: This is true in TypeScript, but some languages do allow mixing values and types together in the same expression and the line between the world of values and the world of types becomes blurrier. They are called "dependent" type systems.
