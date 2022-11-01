@@ -251,7 +251,31 @@ A & unknown = A
 
 ![10](./img/02-types-are-just-data/10.svg)
 
-## Intersections
+## 交叉类型
+
+交叉类型和联合类型正好相反：`A & B` 是**同时属于 `A` 和 `B`** 的所有值的类型：
+
+![11](./img/02-types-are-just-data/11.svg)
+
+交叉类型用来处理对象类型很方便，因为对象类型 `A` 和 对象类型 `B` 的交集是具有 `A` 所有属性和 `B` 所有属性的对象集合：
+
+![12](./img/02-types-are-just-data/12.svg)
+
+这就是为什么我们有时会使用联合类型来将对象类型合并在一起[^2]：
+
+```ts
+type WithName = { name: string };
+type WithAge = { age: number };
+
+function someFunction(input: WithName & WithAge) {
+  // `input` is both a `WithName` and a `WithAge`!
+  input.name; // ✅ property `name` has type `string`
+  input.age; // ✅ property `age` has type `number`
+}
+```
+
+But what happens if we try to intersect two types that do not overlap at all? What does it even mean to intersect string and number for instance?
+
 
 ## 脚注
 
