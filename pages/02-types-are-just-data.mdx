@@ -125,6 +125,52 @@ greeting = hello; // ✅ type-checks!
 hello = greeting; // ❌ doesn't type-check!
 ```
 
+我们也可以说 `"H1"` 和 `"H1"` 可以**分配**给 `string` 类型。
+
+**可分配** 这个概念在 Typescript 中无处不在。大多数的类型错误都会告诉你，这个类型不能分配给其它类型。当你开始认为类型就是集合时，可分配性变得更加直观 —— **“ A 可以分配给 B ”** 意味着 **“集合 B 包含所有 集合 A 中的值”** 或者 **“集合 A 是集合 B 的子集”**
+
+`string` 类型和 `number` 类型是互斥的：它们没有重叠的部分，因为没有值同时属于它们两个集合。
+
+![2](./img/02-types-are-just-data/2.svg)
+
+
+这就是为什么你不能将 `string` 类型的变量分配给 `number` 类型的变量，反之亦然：
+
+```ts
+let greeting: string = "Hello";
+let age: number = greeting; // ❌ doesn't type-check.
+```
+
+最后，两种类型有时会**部分重叠**。在这种情况下，它们既不互斥也不具有子类型关系：
+
+![3](./img/02-types-are-just-data/3.svg)
+
+这通常发生在使用联合类型时。例如类型 `"green" | "orange"` 和类型 `"orange" | "red"` 是部分重叠的！
+
+![4](./img/02-types-are-just-data/4.svg)
+
+让我们为这两种联合类型命名：
+
+```ts
+type CanCross = "green" | "orange";
+type ShouldStop = "orange" | "red";
+```
+
+现在，我们可以思考一下，`CanCross` 类型的变量分配给 `ShouldStop` 类型的变量吗？
+
+```ts
+let canCross = "orange" as CanCross; // ✅
+let shouldStop = "orange" as ShouldStop; // ✅
+canCross = shouldStop;
+//       ❌ ~~~~~~~~~ type 'red' isn't assignable to the type `green` | 'orange'
+shouldStop = canCross;
+//         ❌ ~~~~~~~ type 'green' isn't assignable to the type `orange` | 'red'
+```
+
+不能。即使 `CanCross` 和 `ShouldStop` 都包含 `string` 类型 `"orange"` ，我们也不能将 `CanCross` 类型的变量分配给 `ShouldStop` 类型，因为它们没有完全重叠。
+
+在上面的例子中，我们可以清楚的看到， `canCross` 和 `shouldStop` 都包含值 `"orange"` ，但是你不能把它赋值给另一个，这可能很违反直觉。请记住， Typescript 并不知道变量包含什么值，它只知道它的类型！
+
 ## 脚注
 
 [^1]: This is true in TypeScript, but some languages do allow mixing values and types together in the same expression and the line between the world of values and the world of types becomes blurrier. They are called "dependent" type systems.
