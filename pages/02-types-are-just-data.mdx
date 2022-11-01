@@ -171,6 +171,14 @@ shouldStop = canCross;
 
 在上面的例子中，我们可以清楚的看到， `canCross` 和 `shouldStop` 都包含值 `"orange"` ，但是你不能把它赋值给另一个，这可能很违反直觉。请记住， Typescript 并不知道变量包含什么值，它只知道它的类型！
 
+## 联合类型-集合的并集
+
+如果你了解一点集合的理论知识，你就会知道两个集合的并集是包含这两个集合的集合，所以 `A | B` 类型包含了所有 `A` 类型和 `B` 类型中的所有可能值。 
+
+![5](./img/02-types-are-just-data/5.svg)
+
+We can join any 2 sets together, including other union types! For example, we can join CanCross and ShouldStop from the previous example into a TrafficLight union type:
+
 ## 脚注
 
 [^1]: This is true in TypeScript, but some languages do allow mixing values and types together in the same expression and the line between the world of values and the world of types becomes blurrier. They are called "dependent" type systems.
