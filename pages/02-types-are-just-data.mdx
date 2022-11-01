@@ -2,10 +2,9 @@ import PageLayout from '../layouts/PageLayout';
 import CodeEditor from '../components/CodeEditor';
 import ItalicTitle from '../components/ItalicTitle';
 import { PostCards } from '../components/Card';
-import { intrParcticeArr } from '../practice/index';
+import { typeAreDataPracticeArr } from '../practice/index';
 
 export const meta = {};
-
 
 # 类型就是数据
 
@@ -35,7 +34,6 @@ type Primitives =
 JavaScript 里除了对象和函数以外的其他值，都属于基础类型。某些基础类型拥有无限个值，像 `number` 和 `string` ，但是其中 `null` 和 `undefined` 类型只拥有一个值。 这些特性同时造就了我们第二种类型：**字面量类型**。
 
 ### 字面量类型
-
 
 字面量类型是“精确”类型，只包含**一个可能的值**。
 
@@ -133,7 +131,6 @@ hello = greeting; // ❌ doesn't type-check!
 
 ![2](./img/02-types-are-just-data/2.svg)
 
-
 这就是为什么你不能将 `string` 类型的变量分配给 `number` 类型的变量，反之亦然：
 
 ```ts
@@ -173,7 +170,7 @@ shouldStop = canCross;
 
 ## 联合类型-集合的并集
 
-如果你了解一点集合的理论知识，你就会知道两个集合的并集是包含这两个集合的集合，所以 `A | B` 类型包含了所有 `A` 类型和 `B` 类型中的所有可能值。 
+如果你了解一点集合的理论知识，你就会知道两个集合的并集是包含这两个集合的集合，所以 `A | B` 类型包含了所有 `A` 类型和 `B` 类型中的所有可能值。
 
 ![5](./img/02-types-are-just-data/5.svg)
 
@@ -318,13 +315,69 @@ type U = "Hi" | "Hello";
 
 ![14](./img/02-types-are-just-data/14.svg)
 
+这就像将一个空集与另一个集合合并。任何类型 `A` 与 `never` 的并集都等于 `A`：
 
-## 脚注
+```ts
+A | never = A
+```
 
-[^1]: This is true in TypeScript, but some languages do allow mixing values and types together in the same expression and the line between the world of values and the world of types becomes blurrier. They are called "dependent" type systems.
+但是，如果您将类型 `A` 与 `never` 相交，你只会得到 `never`：
 
+```ts
+A & never = never
+```
 
-[^2]: Intersecting two object types is not exactly like merging two objects with `{...a, ...b}`, the way we would in JavaScript, because the intersection is applied recursively on keys that exist on both object types. We will learn more about intersections of objects in the next chapter.
+那是说得通的！没有任何东西能与空集相交。
+
+## 关于 `any` ?
+
+您可能已经注意到，到目前为止我给出的所有示例都省略了 `any` 。为什么呢？
+
+每个人都知道在 TypeScript 中使用 `any` 被认为是一种**不好的做法**。它被用作绕过类型检查的**逃生舱口**。虽然有时我们还是会使用它，可能是因为我们不知道如何正确书写一段代码，或者是因为我们没有足够的时间或者没有的正确方法来修复类型错误。但是把 `any` 类型放在我们心智模型的那个位置适合呢，以及为什么它会绕过类型检查呢？
+
+老实说，`any` 不适合我们的心智模型，因为它不适用于集合理论。 `any` 是**所有其他 TypeScript 类型**的超类型**和**子类型。到处都是：
+
+![15](./img/02-types-are-just-data/15.svg)
+
+我知道，对吧？🤷
+
+除了本身没有多大意义之外，`any` 还会在代码库中**传播**，因为一旦您在类型表达式中使用它，它的计算结果为 `any`：
+
+```ts
+A | any = any
+```
+
+```ts
+A & any = any
+```
+
+`any` 是一个奇怪的类型。我们不会在 type-level 上大量使用它，除非在一些影响不大的特殊地方，比如[类型约束](https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints)，或者在[条件类型](/05-conditional-types)的右侧，但现在让我们把它放在一边。
+
+## 总结
+
+多么棒的一章！我们已经介绍了成为 TypeScript 专家的一些最重要的概念。让我总结一下到目前为止我们学到的东西：
+
+1. 在我们的类型级程序中，类型只是数据。
+2. 类型有 5 种主要类别：**基础**类型、**字面量**类型、**数据结构**类型、**联合**类型和**交集**类型。
+3. **类型是集合**。一旦你理解了这个概念，一切都开始变得有意义！
+4. 联合类型是将集合合并在一起的**数据结构**。
+5. `unknown` 是**最终的超集** —— 它包含所有其它类型。
+6. `never` 是**空集** —— 它包含在所有其它类型中。。
+7. `any` 很奇怪，因为它是每种类型的子集**和**超集。
+
+## 挑战!
+
+让我们练习一下！如果您还没有准备好，请查看上一章中的[“挑战如何工作”](/01-types-and-values#how-challenges-work)部分，了解如何应对这些挑战。
+
+<CodeEditor height={480} defaultValue={[typeAreDataPracticeArr[0],typeAreDataPracticeArr[1]]} />
+<CodeEditor height={480} defaultValue={[typeAreDataPracticeArr[2],typeAreDataPracticeArr[3]]}  />
+<CodeEditor height={480} defaultValue={[typeAreDataPracticeArr[4],typeAreDataPracticeArr[5]]} />
+<CodeEditor height={480} defaultValue={[typeAreDataPracticeArr[6],typeAreDataPracticeArr[7]]} />
+<CodeEditor height={480} defaultValue={[typeAreDataPracticeArr[8],typeAreDataPracticeArr[9]]} />
+<CodeEditor height={480} defaultValue={[typeAreDataPracticeArr[10],typeAreDataPracticeArr[11]]} />
+
+[^1]: 这在 TypeScript 中是正确的，但有些语言确实允许在同一个表达式中混合值和类型，值的世界和类型的世界之间的界限变得更加模糊。它们被称为[“依赖”类型系统](https://en.wikipedia.org/wiki/Dependent_type)。
+[^2]: 相交两个对象类型并不完全像用 `{...a, ...b}` 合并两个对象，就像我们在 JavaScript 中所做的那样，因为交集递归地应用于两种对象类型上都存在的键。我们将在下一章了解更多关于对象的交集。
 
 export default ({ children }) => (
   <PageLayout meta={meta}>{children}</PageLayout>

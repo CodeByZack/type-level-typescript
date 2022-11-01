@@ -2,7 +2,7 @@ import PageLayout from '../layouts/PageLayout';
 import CodeEditor from '../components/CodeEditor';
 import ItalicTitle from '../components/ItalicTitle';
 import { PostCards } from '../components/Card';
-import { intrParcticeArr } from '../practice/index';
+import { intrPracticeArr } from '../practice/index';
 
 export const meta = {};
 
@@ -16,7 +16,7 @@ export const meta = {};
 
 <CodeEditor
   height={225}
-  defaultValue={[intrParcticeArr[0], intrParcticeArr[1]]}
+  defaultValue={[intrPracticeArr[0], intrPracticeArr[1]]}
 />
 
 多年来，TypeScript 的**类型系统**已经从基本的类型注解发展成为一种**庞大而复杂**的编程语言。如果您曾经查看过开源库的代码，您可能会发现看起来令人生畏和陌生的类型，就像来自另一个星球的某种深奥的语言。开源库的代码通常比我们习惯编写的代码更抽象；这也是它为什么广泛使用高级 TypeScript 特性，例如**泛型**、**条件类型**、**映射类型**甚至**递归类型**。在开发 [TS-Pattern](https://github.com/gvergnaud/ts-pattern) 时，我深入研究了这些概念。 TS-Pattern 是一个代码极度复杂的开源库。在这门课程中，我希望分享给你，我通过阅读大量源代码和对对类型系统进行数百小时的修修改改后，所学到的东西。
@@ -31,7 +31,7 @@ export const meta = {};
 
 想检查你的路由参数是否正确传递？**这里有一个例子**：
 
-<CodeEditor height={350} defaultValue={intrParcticeArr[2]} />
+<CodeEditor height={350} defaultValue={intrPracticeArr[2]} />
 
 <ItalicTitle>这**不是**魔法。类型系统是一种**真正的**编程语言！</ItalicTitle>
 

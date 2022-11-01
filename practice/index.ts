@@ -2,6 +2,8 @@
 import introduction from '!!raw-loader!./00-introduction.ts';
 // @ts-ignore
 import tavoduction from '!!raw-loader!./01-types-and-values.ts';
+// @ts-ignore
+import typeAreDataPracticeStr from '!!raw-loader!./02-types-are-just-data.ts';
 
 const spliter = '// ==============================================';
 
@@ -11,5 +13,6 @@ const splitPracticeStr = (str: string) => {
   return arr;
 };
 
-export const intrParcticeArr = splitPracticeStr(introduction);
-export const tavParcticeArr = splitPracticeStr(tavoduction);
+export const intrPracticeArr = splitPracticeStr(introduction);
+export const tavPracticeArr = splitPracticeStr(tavoduction);
+export const typeAreDataPracticeArr = splitPracticeStr(typeAreDataPracticeStr);
