@@ -43,4 +43,10 @@ export const PostArrary: IPostItem[] = [
     desc: 'Learn how to interpolate, parse, and generate unions of string literals.',
     index: 6,
   },
+  {
+    title: 'Type Challenges',
+    link: '/type-challenges',
+    desc: 'do some typescript challenges!',
+    index: 7,
+  },
 ];

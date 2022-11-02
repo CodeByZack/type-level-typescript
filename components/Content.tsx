@@ -70,7 +70,7 @@ const Content = (props: {
       >
         {children}
       </main>
-      <Footer next={next} prev={prev} />
+      {(next || prev) && <Footer next={next} prev={prev} />}
     </>
   );
 };
