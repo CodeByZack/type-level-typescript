@@ -3,12 +3,15 @@ import MonacoEditor, {
   BeforeMount,
   OnChange,
   OnValidate,
+  Monaco,
 } from '@monaco-editor/react';
 import { useEffect, useRef, useState } from 'react';
 import useForceRender from '../hooks/useForceRender';
 // @ts-ignore
 import libSource from '!!raw-loader!../utils/type.d.ts';
 import confetti from 'canvas-confetti';
+import PrettierWorker from 'worker-loader!../workers/prettier.worker.js';
+import { createWorkerQueue } from '../utils/workers';
 
 interface IProps {
   defaultValue?: string | [string, string];
@@ -24,6 +27,64 @@ interface IEditorData {
   isChallengeMode: boolean;
   tab: number;
 }
+
+const registerDocumentFormattingEditProviders = (monaco: Monaco) => {
+  const disposables = [];
+  let prettierWorker;
+
+  const formattingEditProvider = {
+    async provideDocumentFormattingEdits(model, _options, _token) {
+      if (!prettierWorker) {
+        prettierWorker = createWorkerQueue(PrettierWorker);
+      }
+      const { canceled, error, pretty } = await prettierWorker.emit({
+        text: model.getValue(),
+        language: model.getLanguageId(),
+      });
+      if (canceled || error) return [];
+      return [
+        {
+          range: model.getFullModelRange(),
+          text: pretty,
+        },
+      ];
+    },
+  };
+
+  disposables.push(
+    monaco.languages.registerDocumentFormattingEditProvider(
+      'markdown',
+      formattingEditProvider
+    )
+  );
+  disposables.push(
+    monaco.languages.registerDocumentFormattingEditProvider(
+      'css',
+      formattingEditProvider
+    )
+  );
+  disposables.push(
+    monaco.languages.registerDocumentFormattingEditProvider(
+      'javascript',
+      formattingEditProvider
+    )
+  );
+  disposables.push(
+    monaco.languages.registerDocumentFormattingEditProvider(
+      'typescript',
+      formattingEditProvider
+    )
+  );
+
+  return {
+    dispose() {
+      disposables.forEach((disposable) => disposable.dispose());
+      if (prettierWorker) {
+        prettierWorker.terminate();
+      }
+    },
+  };
+};
 
 const getBtnClassName = (choosed?: boolean) => {
   if (choosed) {
@@ -69,7 +130,6 @@ const CodeEditor = (props: IProps) => {
 
   const onMount: OnMount = (editor, monaco) => {
     edtiorDataRef.current.editor = editor;
-
     updateValue();
   };
 
@@ -87,6 +147,7 @@ const CodeEditor = (props: IProps) => {
   };
 
   const beforeMount: BeforeMount = (monaco) => {
+    registerDocumentFormattingEditProviders(monaco);
     monaco.editor.defineTheme('customTheme', {
       base: 'vs-dark',
       inherit: true,
