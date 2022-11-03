@@ -22,7 +22,7 @@ const options = {
     parser: 'typescript',
     plugins: [await import('prettier/parser-typescript')],
     printWidth: 100,
-    semi: false,
+    semi: true,
     singleQuote: true,
   }),
 };
