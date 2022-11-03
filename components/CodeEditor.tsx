@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 import useForceRender from '../hooks/useForceRender';
 // @ts-ignore
 import libSource from '!!raw-loader!../utils/type.d.ts';
+import confetti from 'canvas-confetti';
 
 interface IProps {
   defaultValue?: string | [string, string];
@@ -21,6 +22,7 @@ interface IEditorData {
   isError: boolean;
   editor?: Parameters<OnMount>[0];
   isChallengeMode: boolean;
+  tab: number;
 }
 
 const getBtnClassName = (choosed?: boolean) => {
@@ -40,6 +42,7 @@ const CodeEditor = (props: IProps) => {
     value2: '',
     isError: false,
     isChallengeMode: false,
+    tab: 0,
   });
 
   const updateValue = () => {
@@ -49,15 +52,19 @@ const CodeEditor = (props: IProps) => {
   };
 
   const handleErrorClear = (markers: any[]) => {
-    if (!markers.length) {
+    console.log(markers);
+    if (!markers.length && edtiorDataRef.current.tab === 0) {
       setIsSuccess(true);
+      confetti();
     } else {
       setIsSuccess(false);
     }
   };
 
   const onValidate: OnValidate = (markers) => {
-    handleErrorClear(markers.filter((m) => m.code !== '6196'));
+    handleErrorClear(
+      markers.filter((m) => !['6133', '6196'].includes(m.code as string))
+    );
   };
 
   const onMount: OnMount = (editor, monaco) => {
@@ -142,10 +149,22 @@ const CodeEditor = (props: IProps) => {
     if (!edtiorDataRef.current.isChallengeMode) return null;
     return (
       <div className="flex items-end">
-        <div className={getBtnClassName(tab === 0)} onClick={() => setTab(0)}>
+        <div
+          className={getBtnClassName(tab === 0)}
+          onClick={() => {
+            setTab(0);
+            edtiorDataRef.current.tab = 0;
+          }}
+        >
           Challenge
         </div>
-        <div className={getBtnClassName(tab === 1)} onClick={() => setTab(1)}>
+        <div
+          className={getBtnClassName(tab === 1)}
+          onClick={() => {
+            setTab(1);
+            edtiorDataRef.current.tab = 1;
+          }}
+        >
           Solution
         </div>
         <button
