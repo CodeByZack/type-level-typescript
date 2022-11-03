@@ -1,9 +1,10 @@
-import CodeEditor from '../components/CodeEditor';
+import CodeEditor from '../components/NewCodeEditor';
 import PageLayout from '../layouts/PageLayout';
+import { intrPracticeArr } from '../practice/index';
 export const meta = {};
 
 # Type Challenges
 
-<CodeEditor height={500} defaultValue={''} />
+<CodeEditor height={500} defaultValue={[intrPracticeArr[0],intrPracticeArr[1]]} />
 export default ({children}) => (<PageLayout meta={meta}>{children}</PageLayout>
 );
