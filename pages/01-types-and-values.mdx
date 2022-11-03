@@ -14,21 +14,21 @@ export const meta = {};
 
 **JavaScript** 没有类型，所以自然所有的 JavaScript 都是 value-level1 代码：
 
-<CodeEditor height={120} defaultValue={tavParcticeArr[0]} />
+<CodeEditor height={120} defaultValue={[tavParcticeArr[0]]} />
 
 **TypeScript**允许我们在 JavaScript 中添加类型注释，并确保我们编写的 sumByTS 函数被调用时只能传入*number*类型的参数：
 
-<CodeEditor height={120} defaultValue={tavParcticeArr[1]} />
+<CodeEditor height={120} defaultValue={[tavParcticeArr[1]]} />
 
 但 TypeScript 的类型系统比它强大得多。我们编写的真实代码有时需要是**泛型**的，并且有可能我们在编写前并不知道具体的类型。
 
 在这种情况下，我们可以在尖括号\<A,B,...\>中定义类型参数，并将它们分配给具有 a：A 的值参数。然后，我们可以将类型参数传递给类型级函数，该函数根据输入类型计算输出类型：
 
-<CodeEditor height={140} defaultValue={tavParcticeArr[2]} />
+<CodeEditor height={140} defaultValue={[tavParcticeArr[2]]} />
 
 **这就是类型级编程！** DoSomething\<A，B\>是用一种特殊的编程语言编写的类型级函数，它与我们用于值的语言不同，但同样强大。我们称这种语言为类型级类型脚本。
 
-<CodeEditor height={140} defaultValue={tavParcticeArr[3]} />
+<CodeEditor height={140} defaultValue={[tavParcticeArr[3]]} />
 
 ## 类型的语言
 
@@ -38,7 +38,7 @@ export const meta = {};
 
 在类型层面，函数被称为通用类型：它们接受一个或几个类型参数，并返回一个单一的输出类型。下面是一个简单的例子：一个函数接受两个类型参数，并把它们包装成一个元组：
 
-<CodeEditor height={220} defaultValue={tavParcticeArr[4]} />
+<CodeEditor height={220} defaultValue={[tavParcticeArr[4]]} />
 
 类型级 TypeScript 没有太多的功能。毕竟它是专门为你的编写而设计的! 也就是说，它确实有足够的功能来(几乎)实现 (图灵完备性)[https://github.com/microsoft/TypeScript/issues/14833] ，这意味着你可以用它解决任意复杂的问题。
 
@@ -63,7 +63,7 @@ export const meta = {};
 
 在每一章的末尾，你将有几个挑战需要解决，以将你的新技能付诸实践。它们看起来是这样的：
 
-<CodeEditor height={200} defaultValue={tavParcticeArr[5]} />
+<CodeEditor height={200} defaultValue={[tavParcticeArr[5]]} />
 
 **命名空间（namespace）** 是一个不太知名的 TypeScript 特性，它让我们在一个专门的范围内隔离每个挑战。
 
@@ -74,7 +74,7 @@ export const meta = {};
 **type test1 = Expect\<Equal\<res1, ...\>\>** 是一个类型级单元测试。它不会进行类型检查，直到你找到正确的解决方案。
 当我想检查无效的输入是否被类型检查器拒绝时，我有时会使用 **@ts-expect-error** 注释。**@ts-expect-error** 只在下一行没有类型检查的情况下进行类型检查!
 
-<CodeEditor height={200} defaultValue={tavParcticeArr[6]} />
+<CodeEditor height={200} defaultValue={[tavParcticeArr[6]]} />
 
 ## 挑战
 

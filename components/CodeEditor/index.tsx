@@ -61,7 +61,7 @@ const CodeEditor = (props: IProps) => {
 
     if (!hideResetBtn || defaultValue[1]) {
       const ChallengeJSX = (
-        <BaseBtn onClick={onTabChange(0)} choosed={tab === 0}>
+        <BaseBtn key="challenge" onClick={onTabChange(0)} choosed={tab === 0}>
           Challenge
         </BaseBtn>
       );
@@ -70,7 +70,7 @@ const CodeEditor = (props: IProps) => {
 
     if (defaultValue[1]) {
       const SolutionJSX = (
-        <BaseBtn onClick={onTabChange(1)} choosed={tab === 1}>
+        <BaseBtn key="solution" onClick={onTabChange(1)} choosed={tab === 1}>
           Solution
         </BaseBtn>
       );
@@ -79,7 +79,7 @@ const CodeEditor = (props: IProps) => {
 
     if (!hideResetBtn) {
       const ResetJSX = (
-        <BaseBtn isResetBtn onClick={codeEditor.reset}>
+        <BaseBtn key="reset" isResetBtn onClick={codeEditor.reset}>
           Reset
         </BaseBtn>
       );
