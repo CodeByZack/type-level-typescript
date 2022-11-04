@@ -52,7 +52,7 @@ const TypeChallenges = (props: IProps) => {
                 setActiveChallenge(v);
                 editorRef.current.setValue(v.challenge);
               }}
-              className="text-xl hover:underline cursor-pointer ml-4 mb-4"
+              className="text-xl hover:underline cursor-pointer ml-4 mt-2"
             >
               {v.title}
             </div>
