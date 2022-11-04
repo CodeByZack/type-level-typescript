@@ -60,18 +60,18 @@ const MDXComponents = {
   li: LI,
   a: A,
   img: Img,
-  wrapper: ({ children, ...props }) => {
-    console.log('wrapper');
-    const updatedChildren = children.map((child) => {
-      if (child.props.className === 'footnotes') {
-        // Since we only have one element that will ever match this
-        // the key doesn't matter, but react will yell without a key.
-        return <Footnotes key={1} {...child.props} />;
-      }
-      return child;
-    });
-    return <>{updatedChildren}</>;
-  },
+  // wrapper: ({ children, ...props }) => {
+  //   console.log('wrapper');
+  //   const updatedChildren = children.map((child) => {
+  //     if (child.props.className === 'footnotes') {
+  //       // Since we only have one element that will ever match this
+  //       // the key doesn't matter, but react will yell without a key.
+  //       return <Footnotes key={1} {...child.props} />;
+  //     }
+  //     return child;
+  //   });
+  //   return <>{updatedChildren}</>;
+  // },
   // pre: Pre,
   // code: InlineCode,
 };

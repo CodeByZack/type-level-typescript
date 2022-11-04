@@ -6,7 +6,7 @@ const NavItem = (props: IPostItem) => {
   return (
     <li>
       <a
-        className="py-3 flex items-center sidebar_sidebarItem gradientUnderline_hoverElement"
+        className="py-3 flex items-center sidebar_sidebarItem "
         href={link}
       >
         <div className="sidebar_line"></div>
@@ -19,58 +19,60 @@ const NavItem = (props: IPostItem) => {
   );
 };
 
-const Nav = () => {
+const NavTitle = (props) => {
+  const { children } = props;
+  return (
+    <h2 className="relative x-text font-black leading-normal text-3xl !mt-8 !mb-3 gradientUnderline_underlined anchor_anchorHover">
+      <span className="">
+        <a
+          href="/00-introduction#chapters"
+          className="underline x-link whitespace-nowrap no-underline gradientUnderline_underlined"
+        >
+          {children}
+        </a>
+      </span>
+    </h2>
+  );
+};
+
+interface INavLayout {
+  icon: React.ReactNode;
+  navTitle: string;
+  content: React.ReactNode;
+  footer?: React.ReactNode;
+}
+
+const NavLayout = (props: INavLayout) => {
+  const { icon, navTitle, content, footer } = props;
   return (
     <>
-      <div className="h-16 mt-1 flex items-center">
-        <IconT />
-      </div>
+      <div className="h-16 mt-1 flex items-center">{icon}</div>
       <div>
-        <h2 className="relative x-text font-black leading-normal text-3xl !mt-8 !mb-3 gradientUnderline_underlined anchor_anchorHover">
-          <span className="gradientUnderline_hoverElement">
-            <a
-              href="/00-introduction#chapters"
-              className="underline x-link whitespace-nowrap no-underline gradientUnderline_underlined"
-            >
-              Chapters
-            </a>
-          </span>
-        </h2>
-        <ul className="flex-col flex-wrap gap-5 font-black x-font-sans text-md sidebar_sidebarList">
-          {PostArrary.map((n, i) => (
-            <NavItem {...n} key={n.link} index={i} />
-          ))}
-        </ul>
+        <NavTitle>{navTitle}</NavTitle>
+        {content}
       </div>
-      <div>
-        <h2 className="relative x-text font-black leading-normal text-3xl !mt-8 !mb-3 gradientUnderline_underlined__G_aI8 anchor_anchorHover__yWSjs">
-          <span className="gradientUnderline_hoverElement__71Cxo">
-            <a
-              href="/about"
-              className="underline x-link whitespace-nowrap no-underline gradientUnderline_underlined__G_aI8"
-            >
-              About
-            </a>
-          </span>
-        </h2>
-      </div>
-      <div>
-        <p className="x-text leading-relaxed text-lg text-base">
-          Made with ❤️ by
-          <span className="gradientUnderline_hoverElement">
-            <a
-              href="https://twitter.com/GabrielVergnaud"
-              target="_blank"
-              rel="nofollow"
-              className="underline x-link whitespace-nowrap gradientUnderline_underlined"
-            >
-              @GabrielVergnaud
-            </a>
-          </span>
-        </p>
-      </div>
+      <div>{footer}</div>
     </>
   );
 };
 
-export default Nav;
+export const PostNav = () => {
+  const content = (
+    <ul className="flex-col flex-wrap gap-5 font-black x-font-sans text-md sidebar_sidebarList">
+      {PostArrary.map((n, i) => (
+        <NavItem {...n} key={n.link} index={i} />
+      ))}
+    </ul>
+  );
+  return <NavLayout navTitle="Chapters" icon={<IconT />} content={content} />;
+};
+
+export const ChallengeNav = (props: { content: React.ReactNode }) => {
+  return (
+    <NavLayout
+      navTitle="Type Challenges"
+      icon={<IconT />}
+      content={props.content}
+    />
+  );
+};

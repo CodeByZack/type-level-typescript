@@ -1,7 +1,7 @@
 import { MDXProvider } from '@mdx-js/react';
 import Content from '../components/Content';
 import MDXComponents from '../components/MDXComponents';
-import Nav from '../components/Nav';
+import { PostNav } from '../components/Nav';
 import { IPostItem } from '../postInfos';
 import DrawerLayout from './DrawerLayout';
 
@@ -15,7 +15,7 @@ const PageLayout = (props: {
   return (
     <MDXProvider components={MDXComponents}>
       <DrawerLayout
-        nav={<Nav />}
+        nav={<PostNav />}
         content={
           <Content next={next} prev={prev}>
             {children}
