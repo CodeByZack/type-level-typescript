@@ -43,7 +43,9 @@ const CodeEditor = (props: IProps) => {
 
   const onMount: OnMount = (editor, monaco) => {
     codeEditor.onEditorMount(editor);
-    onEditorMount(editor);
+    if(typeof onEditorMount === "function"){
+      onEditorMount(editor);
+    }
   };
 
   const beforeMount: BeforeMount = (monaco) => {
