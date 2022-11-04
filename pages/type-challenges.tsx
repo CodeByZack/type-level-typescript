@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import CodeEditor from '../components/CodeEditor';
 import TypeChallengeLayout from '../layouts/TypeChallengeLayout';
 import { getAllChallenges, IChallenge } from '../utils/challenges';
 import ReactMarkdown from 'react-markdown';
 import MDXComponents from '../components/MDXComponents';
 import mdxPrism from 'mdx-prism';
+import { OnMount } from '@monaco-editor/react';
 
 interface IProps {
   challenges: IChallenge[];
@@ -25,12 +26,15 @@ const groupBy = <T,>(items: T[], key: string) => {
 const TypeChallenges = (props: IProps) => {
   const { challenges } = props;
   const [activeChallenge, setActiveChallenge] = useState(challenges[0]);
+  const editorRef = useRef<Parameters<OnMount>[0]>();
 
   const groupByData = useMemo(() => {
     return groupBy(challenges, 'level');
   }, [challenges]);
 
-  console.log(groupByData);
+  const onEditorMount = (editor: Parameters<OnMount>[0]) => {
+    editorRef.current = editor;
+  };
 
   const renderNavList = () => {
     const levels = Object.keys(groupByData);
@@ -46,6 +50,7 @@ const TypeChallenges = (props: IProps) => {
               key={v.title}
               onClick={() => {
                 setActiveChallenge(v);
+                editorRef.current.setValue(v.challenge);
               }}
               className="text-xl hover:underline cursor-pointer ml-4 mb-4"
             >
@@ -68,7 +73,10 @@ const TypeChallenges = (props: IProps) => {
           {activeChallenge.desc}
         </ReactMarkdown>
       </details>
-      <CodeEditor defaultValue={[activeChallenge.challenge]} />
+      <CodeEditor
+        onEditorMount={onEditorMount}
+        defaultValue={[activeChallenge.challenge]}
+      />
       <div className="mb-64"></div>
     </TypeChallengeLayout>
   );

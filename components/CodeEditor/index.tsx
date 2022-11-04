@@ -18,10 +18,11 @@ interface IProps {
   height?: number;
   name?: string;
   hideResetBtn?: boolean;
+  onEditorMount?: (editor : Parameters<OnMount>[0]) => void;
 }
 
 const CodeEditor = (props: IProps) => {
-  const { defaultValue, height = 400, name, hideResetBtn } = props;
+  const { defaultValue, height = 400, name, hideResetBtn, onEditorMount } = props;
   const [tab, setTab] = useState(0);
   const [isSuccess, setIsSuccess] = useState(false);
   const tabRef = useRef(tab);
@@ -42,6 +43,7 @@ const CodeEditor = (props: IProps) => {
 
   const onMount: OnMount = (editor, monaco) => {
     codeEditor.onEditorMount(editor);
+    onEditorMount(editor);
   };
 
   const beforeMount: BeforeMount = (monaco) => {
