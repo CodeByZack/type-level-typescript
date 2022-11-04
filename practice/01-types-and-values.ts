@@ -49,14 +49,11 @@ namespace challenge {
 // ==============================================
 
 
-// @ts-expect-error
-// ✅ 这行会做类型检查因为
-let x: number = "Hello"; // 这行有问题
+// @ts-expect-error ✅ this type-checks because
+let x: number = "Hello"; // this line does not.
 
-// @ts-expect-error 
-//❌ 这行不会做类型检查因为
-let y: number = 2; // 这行没有问题，可以把鼠标放到上面的红色波浪线上看提示：未使用的“@ts-expect-error”指令。
-
+// @ts-expect-error ❌ this doesn't type-check because
+let y: number = 2; // this line does!
 
 
 // ==============================================
