@@ -18,8 +18,8 @@ const getChallengeInfo = (challengeContent, challengeFileName) : IChallenge => {
   if (!result) return null;
   const desc = result[1].replace(/^\s+|\s+$/g, '');
   const challenge = result[2].replace(/^\s+|\s+$/g, '');
-  const [level, title] = challengeFileName.replace('.ts', '').split('-');
-  return { desc, challenge, level, title };
+  const [level, ...title] = challengeFileName.replace('.ts', '').split('-');
+  return { desc, challenge, level, title : title.join(" ") };
 };
 
 export async function getAllChallenges() {
