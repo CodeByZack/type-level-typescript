@@ -3,6 +3,7 @@ import CodeEditor from '../components/CodeEditor';
 import ItalicTitle from '../components/ItalicTitle';
 import { PostCards } from '../components/Card';
 import { tavPracticeArr } from '../practice/index';
+import { PostArrary } from '../postInfos';
 
 export const meta = {};
 
@@ -48,13 +49,6 @@ type DoSomething<A, B> = ...
 // This is a value-level function:
 const doSomething = (a, b) => ...
 ```
-
-The language of types
-Type-level TypeScript is a minimal, purely-functional language.
-
-The term "functional" in that definition refers to Functional Programming, a concept you might have heard of before. Type-level TypeScript is functional simply because functions are the main means of abstraction of this language. We will use functions all the time.
-
-At the type level, functions are called generic types: they take one or several type parameters and return a single output type. Here is a simple example of a function taking two type parameters and wrapping them in a tuple:
 
 ## 类型的语言
 
@@ -136,8 +130,10 @@ Type-level TypeScript 没有太多的特性。毕竟它是专门为你的代码�
   defaultValue={[tavPracticeArr[13], tavPracticeArr[14]]}
 />
 
-[^1]: In computer science lingo, people often talk about terms rather than values to distinguish regular code from types. I find the term "term" a little more confusing than "value" and I haven't heard it much in my career, that's why I decided to stick with talking about value-level and type-level code. I believe that values are a concept that feels familiar to more developers.
+[^1]: 在计算机科学中, 人们通常使用术语来区分值和类型。“术语”这个词比“值”更令人费解，而且在我的职业生涯中很少接触过术语，所以我坚持讨论 value-level 和 type-level 的代码。我坚信“值”这个概念对于大多数开发者来说更为熟悉。
 
 export default ({ children }) => (
-  <PageLayout meta={meta}>{children}</PageLayout>
+  <PageLayout prev={PostArrary[0]} next={PostArrary[2]} meta={meta}>
+    {children}
+  </PageLayout>
 );

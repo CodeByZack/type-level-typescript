@@ -3,6 +3,7 @@ import CodeEditor from '../components/CodeEditor';
 import ItalicTitle from '../components/ItalicTitle';
 import { PostCards } from '../components/Card';
 import { intrPracticeArr } from '../practice/index';
+import { PostArrary } from '../postInfos';
 
 export const meta = {};
 
@@ -48,5 +49,5 @@ export const meta = {};
 让我们开始吧！
 
 export default ({ children }) => (
-  <PageLayout meta={meta}>{children}</PageLayout>
+  <PageLayout next={PostArrary[1]} meta={meta}>{children}</PageLayout>
 );

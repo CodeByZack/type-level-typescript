@@ -3,6 +3,7 @@ import CodeEditor from '../components/CodeEditor';
 import ItalicTitle from '../components/ItalicTitle';
 import { PostCards } from '../components/Card';
 import { typeAreDataPracticeArr } from '../practice/index';
+import { PostArrary } from '../postInfos';
 
 export const meta = {};
 
@@ -369,16 +370,36 @@ A & any = any
 
 让我们练习一下！如果您还没有准备好，请查看上一章中的[“挑战如何工作”](/01-types-and-values#how-challenges-work)部分，了解如何应对这些挑战。
 
-<CodeEditor height={480} defaultValue={[typeAreDataPracticeArr[0],typeAreDataPracticeArr[1]]} />
-<CodeEditor height={480} defaultValue={[typeAreDataPracticeArr[2],typeAreDataPracticeArr[3]]}  />
-<CodeEditor height={480} defaultValue={[typeAreDataPracticeArr[4],typeAreDataPracticeArr[5]]} />
-<CodeEditor height={480} defaultValue={[typeAreDataPracticeArr[6],typeAreDataPracticeArr[7]]} />
-<CodeEditor height={480} defaultValue={[typeAreDataPracticeArr[8],typeAreDataPracticeArr[9]]} />
-<CodeEditor height={480} defaultValue={[typeAreDataPracticeArr[10],typeAreDataPracticeArr[11]]} />
+<CodeEditor
+  height={480}
+  defaultValue={[typeAreDataPracticeArr[0], typeAreDataPracticeArr[1]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[typeAreDataPracticeArr[2], typeAreDataPracticeArr[3]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[typeAreDataPracticeArr[4], typeAreDataPracticeArr[5]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[typeAreDataPracticeArr[6], typeAreDataPracticeArr[7]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[typeAreDataPracticeArr[8], typeAreDataPracticeArr[9]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[typeAreDataPracticeArr[10], typeAreDataPracticeArr[11]]}
+/>
 
 [^1]: 这在 TypeScript 中是正确的，但有些语言确实允许在同一个表达式中混合值和类型，值的世界和类型的世界之间的界限变得更加模糊。它们被称为[“依赖”类型系统](https://en.wikipedia.org/wiki/Dependent_type)。
 [^2]: 相交两个对象类型并不完全像用 `{...a, ...b}` 合并两个对象，就像我们在 JavaScript 中所做的那样，因为交集递归地应用于两种对象类型上都存在的键。我们将在下一章了解更多关于对象的交集。
 
 export default ({ children }) => (
-  <PageLayout meta={meta}>{children}</PageLayout>
+  <PageLayout prev={PostArrary[1]} next={PostArrary[3]} meta={meta}>
+    {children}
+  </PageLayout>
 );
