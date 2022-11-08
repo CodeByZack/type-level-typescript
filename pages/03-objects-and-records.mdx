@@ -47,20 +47,32 @@ type User = {
 };
 ```
 
-In fact, they are the type-level equivalent of JS objects. Just like them, they can contain as many properties as we'd like, and each property is indexed by a unique key. Notice that each key can contain a different type: the name key holds a value of type string but the age key holds a value of type number here.
+事实上，它们是 JS 对象在 type-level 的等价物。就像 JS 对象一样，它可以包含我们想要的任意数量的属性，并且每个属性都由一个**唯一的键**索引。需要注意的是，每个键可以包含**不同**的类型： `name` 键包含 `string` 类型， `age` 键包含 `numner` 类型。
 
-The User type we've created is the set of all objects with a name, an age and a role property containing values of the correct types:
-
-
-但 TypeScript 的类型系统比它强大得多。真实世界里，我们编写的代码有时需要是**通用**的，并且需要接收我们没法提前知道的类型。
-
-在这种情况下，我们可以在尖括号 `<A,B,...>` 中定义类型参数，并使用它们给**函数参数**添加注释，像这样 `a：A` 。然后，我们可以将类型参数传递给 **type-level 函数**，该函数根据输入类型计算输出类型：
+我们创建的 `User` 类型是具有`name`、`age` 和包含正确类型值的 `role` 属性的所有对象的集合：
 
 ```ts
-// Using type level programming:
-function genericFunction<A, B>(a: A, b: B): DoSomething<A, B> {
-  return doSomething(a, b);
-}
+// ✅ this object is in the `User` set.
+const gabriel: User = {
+  name: "Gabriel",
+  role: "admin",
+  age: 28,
+};
+
+// ❌
+const bob: User = {
+  name: "Bob",
+  age: 45,
+  // <- the `role` key is missing.
+};
+
+// ❌
+const peter: User = {
+  name: "Peter",
+  role: "standard",
+  age: "45" /* <- the `age` key should be of type `number`,
+                   but it's assigned to a `string`. */,
+};
 ```
 
 **这就是 type-level 编程！** `DoSomething<A，B>` 是用一种特殊的编程语言编写的 type-level 函数，它与我们用于值的语言**不同**，但同样强大。我们称这种语言为 **Type-level TypeScript** 。
