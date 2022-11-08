@@ -17,14 +17,40 @@ type SomeObject = { key1: boolean; key2: number };
 type SomeRecord = { [key: string]: number };
 ```
 
-**TypeScript** 让我们在 JavaScript 中添加类型注释，并确保我们编写的 `sum` 函数被调用时只能传入 `number` 类型的参数：
+在我们开始之前，让我再次提醒你一下，我们[上一章节](/02-types-are-just-data)讨论过的重要概念。在深入探讨[类型和集合理论之间的关系](/02-types-are-just-data#types-are-sets)之前，我们简要介绍了类型的**五个主要类别** —— **基础**类型、**字面量**类型、**数据结构**类型、**联合**类型和**交集**类型。
+
+我们发现**类型代表一组值**。就像集合一样，类型可以包含其他类型，我们把这种关系称之**子类型**。
+
+![1](./img/03-objects-and-records/1.svg)
+
+最后，我们学习了两种特殊的类型： `never` - **空集**， 和 `unkown` - **其它所有类型的超集**。
+
+现在，让我们关注上一章节中提到的**四种数据结构类型**中的**两种**：**Objects** 和 **Records** ：
 
 ```ts
-// Using type annotations:
-function sum(a: number, b: number): number {
-  return a + b;
-}
+type FourKindsOfDataStructures =
+  | { key1: boolean; key2: number } // objects
+  | { [key: string]: number } // records
+  | [boolean, number] // tuples
+  | number[]; // arrays
 ```
+
+## Object 类型
+
+Object 类型定义 **JavaScript 的对象集合**。创建 Object 类型的语法与我们创建常规对象的方式非常相似：
+
+```ts
+type User = {
+  name: string;
+  age: number;
+  role: "admin" | "standard";
+};
+```
+
+In fact, they are the type-level equivalent of JS objects. Just like them, they can contain as many properties as we'd like, and each property is indexed by a unique key. Notice that each key can contain a different type: the name key holds a value of type string but the age key holds a value of type number here.
+
+The User type we've created is the set of all objects with a name, an age and a role property containing values of the correct types:
+
 
 但 TypeScript 的类型系统比它强大得多。真实世界里，我们编写的代码有时需要是**通用**的，并且需要接收我们没法提前知道的类型。
 
