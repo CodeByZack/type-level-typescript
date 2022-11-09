@@ -100,10 +100,6 @@ const alice: User = {
 Object literal may only specify known properties, and 'bio' does not exist in type 'User'. (2322)
 ```
 
-The term Object literal refers to objects defined inline, using the {} syntax.
-
-What if we were assigning a pre-existing object with extra properties to alice instead?
-
 **对象字面量**指的是你使用大括号 `{}` 语法**內联**定义的对象。
 
 如果我们将具有额外属性的，**预先定义好的**对象赋值给 `alice` 会报错吗？
@@ -124,97 +120,21 @@ TypeScript 不会报错。
 
 所以最终的答案是**具有额外属性的对象可以分配给具有更少属性的对象**，但是在**对象被内联定义**的上下文中，TypeScript 有**额外的规则**来确保我们不会错误地分配我们之后无法使用的属性，因为类型检查会禁止我们这样做。
 
-**这就是 type-level 编程！** `DoSomething<A，B>` 是用一种特殊的编程语言编写的 type-level 函数，它与我们用于值的语言**不同**，但同样强大。我们称这种语言为 **Type-level TypeScript** 。
+![2](./img/03-objects-and-records/2.svg)
 
-```ts
-// This is a type-level function:
-type DoSomething<A, B> = ...
+This means that you have absolutely no guarantee that an object of some type does not contain extra props! An object type is the set of objects with at least all properties it defines.
 
-// This is a value-level function:
-const doSomething = (a, b) => ...
-```
+这意味着，你**不能保证**某种类型的对象**不包含**额外的属性！[^1] 一个 Object 类型是一个**至少**包含它所定义的所有属性的对象的集合。
 
-## 类型的语言
+现在，让我们看看，可以用 type-level 的对象做些什么？
 
-**Type-level TypeScript** 是一种最小的、纯函数式的语言。
-
-该定义中的 "函数式 "一词指的是函数式编程，一个你可能早已听说过了的概念。Type-level TypeScript 是函数式的，是因为函数是这种语言的主要抽象手段。在 type-level 编程中，我们将一直使用函数。
-
-在 type-level 层面，函数被称为**泛型类型**：它们接受一个或几个**类型参数**，并返回一个单一的类型**输出**。下面是一个简单的例子：一个函数接受两个类型参数，并把它们包装成一个元组类型返回：
-
-```ts
-type SomeFunction<A, B> = [A, B];
-/*                ----    ------
-                   ^         \
-                  type        return type
-               parameters
-
-     \-------------------------/
-                 ^
-              Generic
-*/
-```
-
-Type-level TypeScript 没有太多的特性。毕竟它是专门为你的代码添加类型而生! 但另一方面，它确实有足够的功能来(几乎)实现 [图灵完备性](https://github.com/microsoft/TypeScript/issues/14833) ，这意味着你可以用它解决任何复杂的问题。
-
-以下是使用 Type-Level TypeScript 可以做到的一些事：
-
-- **代码分支**：根据条件（相当于值级别的 `if/else` 关键字）执行不同的代码路径。
-- **变量赋值**：声明一个变量并在表达式中使用它（相当于值级别的 `var/let` 关键字）。
-- **函数**：可重复使用的逻辑，如我们在上一个示例中看到的那样。
-- **循环**：通常通过递归来实现循环。
-- **相等检查**：`==`，类型语言的相等判断！
-- 还有更多！
-
-以下是一些无法做到的事情：
-
-- **无法修改变量值**：你不能在 type-Level 将变量重新赋值。
-- **没有输入/输出**：你不能执行副作用，例如将某些内容打印到控制台、读取文件或在 type-Level 发出 HTTP 请求。这是幸运的：你不会希望类型系统能读取你的文件并将它们发送到某个服务器！
-- **没有高阶函数**：你不能将函数传递给 type-Level TypeScript 中的另一个函数。这是 value-level 上非常常见的模式。例如，`.map`、`.filter` 和 `.reduce` 是高阶函数。我们无法在 type-Level 实现这些。但实际上，这种限制并没有那么糟糕，因为 type-Level 的算法通常更简单很多。
-
-这是我们将在接下来的章节中学习的语言的简要概述。现在，让我们迎接我们的第一个挑战！
-
-## How challenges work
-
-在每一章的末尾，你都会有有几个挑战需要解决，将你的新技能付诸实践。它们看起来是这样的：
-
-<CodeEditor height={200} defaultValue={[tavPracticeArr[5]]} />
-
-- `命名空间（namespace）` 是一个[不太为人所知的 TypeScript 特性](https://www.typescriptlang.org/docs/handbook/namespaces.html)，它将我们的挑战隔离在一个单独的作用域下。
-
-- `TODO` 是一个占位符。你需要用你的代码把它替换掉!
-
-- `type res1 = ...` 是你的泛型类型对某个输入类型返回的类型。你可以用鼠标悬停它来查看其当前值。
-
-- `type test1 = Expect<Equal<res1, ...>>` 是一个 type-level 的**单元测试**。它会报错，直到你找到正确的解决方案。
-
-- 我有时会使用 `@ts-expect-error` 注释，当我期望类型检查出错的时候。 `@ts-expect-error` 只在下一行类型出错的情况下才是正确的!
-
-<CodeEditor height={200} defaultValue={[tavPracticeArr[6]]} />
-
-## 挑战
-
-<CodeEditor
-  height={500}
-  defaultValue={[tavPracticeArr[7], tavPracticeArr[8]]}
-/>
-
-<CodeEditor
-  height={500}
-  defaultValue={[tavPracticeArr[9], tavPracticeArr[10]]}
-/>
-
-<CodeEditor
-  height={500}
-  defaultValue={[tavPracticeArr[11], tavPracticeArr[12]]}
-/>
 
 <CodeEditor
   height={500}
   defaultValue={[tavPracticeArr[13], tavPracticeArr[14]]}
 />
 
-[^1]: 在计算机科学中, 人们通常使用术语来区分值和类型。“术语”这个词比“值”更令人费解，而且在我的职业生涯中很少接触过术语，所以我坚持讨论 value-level 和 type-level 的代码。我坚信“值”这个概念对于大多数开发者来说更为熟悉。
+[^1]: This is why Object.keys(...) returns a string[] and not a (keyof Obj)[] by the way. (keyof Obj)[] would be incorrect because Object.keys(...) could return strings that are not assignable to keyof Obj.
 
 export default ({ children }) => (
   <PageLayout prev={PostArrary[0]} next={PostArrary[2]} meta={meta}>
