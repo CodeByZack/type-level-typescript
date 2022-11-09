@@ -75,6 +75,55 @@ const peter: User = {
 };
 ```
 
+**但是具有额外属性的对象呢**？它们可以分配给我们的 `User` 类型吗？
+
+嗯，**可以……也不可以**。让我解释一下！
+
+## 对象的可分配性
+
+如果您尝试将对象分配给具有显式类型注释的变量，就像我们到目前为止所做的那样，TypeScript 将**拒绝**额外的属性：
+
+```ts
+const alice: User = {
+  name: "Alice",
+  age: 35,
+  role: "admin",
+  bio: "...",
+/* ~~~~~~~~~  
+       ^  ❌ This doesn't type-check. */
+};
+```
+
+这是你将得到的完整错误：
+
+```ts
+Object literal may only specify known properties, and 'bio' does not exist in type 'User'. (2322)
+```
+
+The term Object literal refers to objects defined inline, using the {} syntax.
+
+What if we were assigning a pre-existing object with extra properties to alice instead?
+
+**对象字面量**指的是你使用大括号 `{}` 语法**內联**定义的对象。
+
+如果我们将具有额外属性的，**预先定义好的**对象赋值给 `alice` 会报错吗？
+
+```ts
+const looksLikeAUser = {
+  name: "Alice",
+  age: 35,
+  role: "admin" as const,
+  bio: "...", // <- extra prop!
+};
+
+// ✅ This works just fine!
+const alice: User = looksLikeAUser;
+```
+
+TypeScript 不会报错。
+
+所以最终的答案是**具有额外属性的对象可以分配给具有更少属性的对象**，但是在**对象被内联定义**的上下文中，TypeScript 有**额外的规则**来确保我们不会错误地分配我们之后无法使用的属性，因为类型检查会禁止我们这样做。
+
 **这就是 type-level 编程！** `DoSomething<A，B>` 是用一种特殊的编程语言编写的 type-level 函数，它与我们用于值的语言**不同**，但同样强大。我们称这种语言为 **Type-level TypeScript** 。
 
 ```ts
