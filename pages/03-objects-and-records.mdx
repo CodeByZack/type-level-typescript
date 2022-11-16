@@ -250,13 +250,16 @@ type WithAge = { age: number };
 type WithRole = { role: "admin" | "standard" };
 ```
 
-现在我们需要一种方法将它们重新组合成一个类型。我们可以为此使用 intersection (&) ：
+现在我们需要一种方法将它们重新组合成一个类型。我们可以为此使用 **intersection** (&) ：
 
 ```ts
 type User = WithName & WithAge & WithRole;
 
 type Organization = WithName & WithAge; // organizations don't have a role
 ```
+
+我们在上一章中已经看到，**intersection** 创建的类型具有交集类型的**所有属性**，因此 `User` 的这个新定义等同于上面的 `User`。
+
 
 <CodeEditor
   height={500}
