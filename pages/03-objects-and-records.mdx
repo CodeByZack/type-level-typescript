@@ -239,10 +239,24 @@ const blogBost2: BlogPost = { title: "part 1", tags: undefined };
 
 必须将所有可选属性分配给 `undefined` 并不方便。所以告诉 TypeScript 可以省略某个属性是一种更好的方法！
 
-## Merging object types with intersections (&)
+## 使用 intersections (&) 合并对象类型
 
 
+为了使我们的代码更加模块化，经常将类型定义拆分为多个对象类型。让我们将我们的 `User` 类型拆分为三个部分：
 
+```ts
+type WithName = { name: string };
+type WithAge = { age: number };
+type WithRole = { role: "admin" | "standard" };
+```
+
+现在我们需要一种方法将它们重新组合成一个类型。我们可以为此使用 intersection (&) ：
+
+```ts
+type User = WithName & WithAge & WithRole;
+
+type Organization = WithName & WithAge; // organizations don't have a role
+```
 
 <CodeEditor
   height={500}
