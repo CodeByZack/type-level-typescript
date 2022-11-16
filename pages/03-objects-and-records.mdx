@@ -221,15 +221,27 @@ const blogBost2: BlogPost = {
 };
 ```
 
-But why do we need some special syntax where it looks like a union type like T | undefined would do the trick?
-
-但是为什么我们需要一些特殊的语法，它看起来像联合类型，如 `T | undefined` 会让上面的代码通过类型检查吗？
+但是为什么我们需要一些特殊的语法，它看起来像联合类型，如 `T | undefined` 。
 
 ```ts
 type BlogPost = { title: string; tags: string[] | undefined };
 ```
 
-这是因为对象必须为其类型中存在的所有键定义值。 TypeScript 会要求我们显式地为 undefined 分配一个标签键：
+这是因为如上定义的对象必须为其类型中存在的所有属性定义值。 TypeScript 会要求我们显式地为 undefined 分配一个 `tags` 属性：
+
+```ts
+const blogBost1: BlogPost = { title: "part 1" };
+//             ^ ❌ type error: the `tags` key is missing.
+
+// ✅
+const blogBost2: BlogPost = { title: "part 1", tags: undefined };
+```
+
+必须将所有可选属性分配给 `undefined` 并不方便。所以告诉 TypeScript 可以省略某个属性是一种更好的方法！
+
+## Merging object types with intersections (&)
+
+
 
 
 <CodeEditor
