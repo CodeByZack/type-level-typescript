@@ -275,6 +275,75 @@ type Organization = WithName & WithAge; // organizations don't have a role
 
 ![3](./img/03-objects-and-records/3.svg)
 
+事实证明，两个对象类型的交集包含它们**键的并集**：
+
+```ts
+type A = { a: string };
+type KeyOfA = keyof A; // => 'a'
+
+type B = { b: number };
+type KeyOfB = keyof B; // => 'b'
+
+type C = A & B;
+type KeyOfC = keyof C; // => 'a' | 'b'
+```
+
+相反，两个对象类型的并集包含它们的键的交集：
+
+```ts
+type A = { a: string; c: boolean };
+type KeyOfA = keyof A; // => 'a' | 'c'
+
+type B = { b: number; c: boolean };
+type KeyOfB = keyof B; // => 'b' | 'c'
+
+type C = A | B;
+type KeyOfC = keyof C; // => ('a' | 'c') & ('b' | 'c') <=> 'c'
+```
+
+另一种思考方式是，如果您有一个类型 `A` 或类型 `B` 的值，那么在这种情况下唯一可能出现的键是 `c`。
+
+这是一般规则：
+
+```ts
+keyof (A & B) = (keyof A) | (keyof B)
+```
+
+```ts
+keyof (A | B) = (keyof A) & (keyof B)
+```
+
+这有点微妙，我希望这是有帮助的！
+
+## 对象相交的特殊情况
+
+使用 intersections 合并对象有两个特殊情况。
+
+**首先**，intersections **递归地**应用于所有对象属性，因此如果某个属性同时存在于两种类型上，**它也会被相交**！
+
+这可能会产生意想不到的结果。特别是如果共享属性包含彼此不重叠的类型。在这种情况下，它将产生 `never` 类型（也称为[空集](/02-types-are-just-data#never--the-empty-set)）：
+
+```ts
+type WithName = { name: string; id: string };
+type WithAge = { age: number; id: number };
+type User = WithName & WithAge;
+
+type Id = User["id"]; // => string & number <=> never
+```
+
+如果您确实知道您的对象没有重叠属性，那么使用 intersections 合并它们就完全没问题了。
+
+**其次**，对象的交集有可能对性能产生影响[^3]。如果您的类型定义是静态的（它们不依赖于类型参数），您可以使用 `interface` 和 `extends` 关键字获得相同的结果：
+
+```ts
+interface User extends WithName, WithAge, WithRole {}
+interface Organization extends WithName, WithAge {}
+```
+
+`interface` 具有更好的性能，但只能静态定义。例如，我们无法在 type-level 函数中创建它们。
+
+
+
 <CodeEditor
   height={500}
   defaultValue={[tavPracticeArr[13], tavPracticeArr[14]]}
@@ -284,6 +353,11 @@ type Organization = WithName & WithAge; // organizations don't have a role
 
 [^2]: The real reason why it's possible to read several properties at once using a union type is because the type level expression User["name"] and the value level expression user["name"] work differently. Instead of finding the key equal to "name" in the type User, TypeScript tries to find every key in User that is assignable to the type "name"!
 If we write User["name" | "age"], TS will find all keys assignable to the type "name" | "age" and return their value types. Pretty cool right?
+
+[^3]: Using too many intersection types can be detrimental to type-checking performance. In the previous chapter (Types are just data), I explained that intersection types were data structures. Instead of actually merging object types into one single entity, they keep each individual object type in memory in a sort of internal list of intersected types. Because of this, the type-checker needs to allocate more memory and will take more time to check if object types are assignable because it will need to traverse this internal list to check each object type one by one.
+
+Interfaces are better in that regard because they actually merge type definitions into one flat structure. Their downside is that they cannot be created dynamically, say from type parameters inside a generic. That's why using intersections to merge objects is still a useful trick to know!
+
 
 export default ({ children }) => (
   <PageLayout prev={PostArrary[0]} next={PostArrary[2]} meta={meta}>
