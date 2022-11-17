@@ -89,7 +89,7 @@ const alice: User = {
   age: 35,
   role: "admin",
   bio: "...",
-/* ~~~~~~~~~  
+/* ~~~~~~~~~
        ^  ❌ This doesn't type-check. */
 };
 ```
@@ -164,9 +164,7 @@ type NameOrAge = User["name"] | User["age"]; // => string | number
 
 只是变得更简洁了！[^2]
 
-
 ## `keyof` 关键字
-
 
 `keyof` 关键字可以让你获取对象类型中**所有属性**的联合。它可以放在任何对象之前：
 
@@ -201,7 +199,6 @@ type UserValues = ValueOf<User>; //  string | number | "admin" | "standard"
 ```
 
 泛型是 **type-level 函数**。现在，我们可以对任何对象类型重用这个逻辑！ 🎉
-
 
 ## 可选属性
 
@@ -241,7 +238,6 @@ const blogBost2: BlogPost = { title: "part 1", tags: undefined };
 
 ## 使用 intersections (&) 合并对象类型
 
-
 为了使我们的代码更加模块化，经常将类型定义拆分为多个对象类型。让我们将我们的 `User` 类型拆分为三个部分：
 
 ```ts
@@ -259,7 +255,6 @@ type Organization = WithName & WithAge; // organizations don't have a role
 ```
 
 我们在上一章中已经看到，**intersection** 创建的类型具有交集类型的**所有属性**，因此 `User` 的这个新定义等同于上面的 `User`。
-
 
 ## 对象的交集和键的并集
 
@@ -398,7 +393,79 @@ type ValueType = RecordOfBooleans[string]; // => boolean
 
 ## 辅助函数
 
+TypeScript 内置了多个非常有用的辅助函数来处理对象类型。我们将很快学习如何创建我们自己的函数，并使用[映射类型](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html)以各种方式转换对象，但现在，让我们看看内置的可用函数。
 
+### Partial
+
+`Partial` 泛型接受一个对象类型并返回另一个相同的类型，并把所有属性都变成可选的：
+
+```ts
+type Props = { value: string; focused: boolean; edited: boolean };
+
+type PartialProps = Partial<Props>;
+// is equivalent to:
+type PartialProps = { value?: string; focused?: boolean; edited?: boolean };
+```
+
+### Required
+
+`Required` 泛型与 `Partial` 的作用相反。它接受一个对象并返回另一个相同的对象，并把所有属性都变成必需的：
+
+```ts
+type Props = { value?: string; focused?: boolean; edited?: boolean };
+
+type RequiredProps = Required<Props>;
+// is equivalent to:
+type RequiredProps = { value: string; focused: boolean; edited: boolean };
+```
+
+### Pick
+
+`Pick` 泛型删除所有不能分配给作为第二个参数给出的键类型的键：
+
+```ts
+type Props = { value: string; focused: boolean; edited: boolean };
+
+type ValueProps = Pick<Props, "value">;
+// is equivalent to:
+type ValueProps = { value: string };
+
+type SomeProps = Pick<Props, "value" | "focused">;
+// is equivalent to:
+type SomeProps = { value: string; focused: boolean };
+```
+
+### Omit
+
+`Omit` 泛型删除所有可分配给作为第二个参数给出的类型的对象属性。它与 `Pick` 相反！
+
+```ts
+type Props = { value: string; focused: boolean; edited: boolean };
+
+type ValueProps = Omit<Props, "value">;
+// is equivalent to:
+type ValueProps = { edited: boolean; focused: boolean };
+
+type OtherProps = Omit<Props, "value" | "focused">;
+// is equivalent to:
+type OtherProps = { edited: boolean };
+```
+
+## 总结
+
+尽管你之前可能已经了解对象类型和记录类型，但我希望本章能培养您对它们所代表的值类型的直觉。对象类型和记录类型是我们对更复杂用例和更高级概念的理解的基础。这个基础一定要扎实！
+
+以下是我们介绍的一些概念：
+
+- 对象类型和记录都表示 **JavaScript 对象集合**。
+- 对象类型是**至少**包含在此类型上定义的所有属性的对象集，但它们还可以包含更多属性。
+- 记录类型是所有属性共享**相同类型**的对象集合。
+- Intersections 让我们将对象“合并”到包含所有属性的类型中。
+- TypeScript 提供了几个内置函数，如 `Partial`、`Required`、`Pick` 和 `Omit` 来转换对象类型。
+
+## 挑战!
+
+让我们练习一下！如果您还没有准备好，请查看[Types & Values](https://type-level-typescript.com/01-types-and-values)章节中的[“How challenges work”](/01-types-and-values#how-challenges-work)部分，了解如何应对这些挑战。
 
 <CodeEditor
   height={500}
@@ -406,14 +473,13 @@ type ValueType = RecordOfBooleans[string]; // => boolean
 />
 
 [^1]: This is why Object.keys(...) returns a string[] and not a (keyof Obj)[] by the way. (keyof Obj)[] would be incorrect because Object.keys(...) could return strings that are not assignable to keyof Obj.
-
-[^2]: The real reason why it's possible to read several properties at once using a union type is because the type level expression User["name"] and the value level expression user["name"] work differently. Instead of finding the key equal to "name" in the type User, TypeScript tries to find every key in User that is assignable to the type "name"!
-If we write User["name" | "age"], TS will find all keys assignable to the type "name" | "age" and return their value types. Pretty cool right?
+[^2]:
+    The real reason why it's possible to read several properties at once using a union type is because the type level expression User["name"] and the value level expression user["name"] work differently. Instead of finding the key equal to "name" in the type User, TypeScript tries to find every key in User that is assignable to the type "name"!
+    If we write User["name" | "age"], TS will find all keys assignable to the type "name" | "age" and return their value types. Pretty cool right?
 
 [^3]: Using too many intersection types can be detrimental to type-checking performance. In the previous chapter (Types are just data), I explained that intersection types were data structures. Instead of actually merging object types into one single entity, they keep each individual object type in memory in a sort of internal list of intersected types. Because of this, the type-checker needs to allocate more memory and will take more time to check if object types are assignable because it will need to traverse this internal list to check each object type one by one.
 
 Interfaces are better in that regard because they actually merge type definitions into one flat structure. Their downside is that they cannot be created dynamically, say from type parameters inside a generic. That's why using intersections to merge objects is still a useful trick to know!
-
 
 export default ({ children }) => (
   <PageLayout prev={PostArrary[0]} next={PostArrary[2]} meta={meta}>
