@@ -261,6 +261,20 @@ type Organization = WithName & WithAge; // organizations don't have a role
 我们在上一章中已经看到，**intersection** 创建的类型具有交集类型的**所有属性**，因此 `User` 的这个新定义等同于上面的 `User`。
 
 
+## 对象的交集和键的并集
+
+等等，如果类型 `{a: string, b: number}` 是 `{a: string}` 和 `{b: number}` 的交集，**为什么这个类型还包含了它们键的并集 `'a' | 'b'` ？**🤔
+
+我知道这让某些人感到困惑，另一部分人则觉得很符合直觉，让我来把这个说清楚一些。
+
+原因如下：**我们并不是对它们的键进行交集，而是对它们的子集合进行交集的操作**。
+
+由于具有**额外**键的对象类型**可分配**给具有**较少键**的对象类型，因此在集合 `{a: string}` 中存在包含类型为 `number` 的键 `b` 的对象。在集合 `{b: number}` 中也有包含 `string` 类型的键 `a` 的对象。
+
+因此集合 `{a: string}` 和集合 `{b: number}` 相交的结果是**同时属于这两个集合**的值，表示为 `{a: string, b: number}` 。
+
+![3](./img/03-objects-and-records/3.svg)
+
 <CodeEditor
   height={500}
   defaultValue={[tavPracticeArr[13], tavPracticeArr[14]]}
