@@ -340,7 +340,7 @@ interface User extends WithName, WithAge, WithRole {}
 interface Organization extends WithName, WithAge {}
 ```
 
-`interface` 具有更好的性能，但只能静态定义。例如，我们无法在 type-level 函数中创建它们。
+[`interface` 具有更好的性能](https://github.com/microsoft/TypeScript/wiki/Performance#preferring-interfaces-over-intersections)，但只能静态定义。例如，我们无法在 type-level 函数中创建它们。
 
 
 
