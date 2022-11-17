@@ -2,7 +2,7 @@ import PageLayout from '../layouts/PageLayout';
 import CodeEditor from '../components/CodeEditor';
 import ItalicTitle from '../components/ItalicTitle';
 import { PostCards } from '../components/Card';
-import { tavPracticeArr } from '../practice/index';
+import { objectAndRecordsPracticeArr } from '../practice/index';
 import { PostArrary } from '../postInfos';
 
 export const meta = {};
@@ -468,13 +468,43 @@ type OtherProps = { edited: boolean };
 让我们练习一下！如果您还没有准备好，请查看[Types & Values](https://type-level-typescript.com/01-types-and-values)章节中的[“How challenges work”](/01-types-and-values#how-challenges-work)部分，了解如何应对这些挑战。
 
 <CodeEditor
-  height={500}
-  defaultValue={[tavPracticeArr[13], tavPracticeArr[14]]}
+  height={480}
+  defaultValue={[
+    objectAndRecordsPracticeArr[0],
+    objectAndRecordsPracticeArr[1],
+  ]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[
+    objectAndRecordsPracticeArr[2],
+    objectAndRecordsPracticeArr[3],
+  ]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[
+    objectAndRecordsPracticeArr[4],
+    objectAndRecordsPracticeArr[5],
+  ]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[
+    objectAndRecordsPracticeArr[6],
+    objectAndRecordsPracticeArr[7],
+  ]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[
+    objectAndRecordsPracticeArr[8],
+    objectAndRecordsPracticeArr[9],
+  ]}
 />
 
 [^1]: 这就是为什么 `Object.keys(...)` 返回一个 `string[]` 而不是 `(keyof Obj)[]` 的原因。 `(keyof Obj)[]` 是不正确的，因为 `Object.keys(...)` 可能会返回**不可分配**给 `keyof Obj` 的字符串.
 [^2]: 使用联合类型可以一次读取多个属性的**真正原因**是 type-level 表达式中 `User["name"]` 和 value-level 表达式中 `user["name"]` 的**工作方式不同**。TypeScript 不是在类型 `User` 中找到等于`“name”`的键，而是尝试在 `User` 中找到**可分配**给类型 `“name”` 的**每个键**！<br/><br/>如果我们写 `User["name" | “age”]`，TS 将找到所有可分配给类型 `"name" | "age"` 的键，并返回它们的值类型。很酷吧？
-
 [^3]: 过度使用 Intersection 类型可能**影响类型检查的性能**. 在上一章（[Types are just data](/02-types-are-just-data)）中，我解释说 Intersection 类型是**数据结构**。它们不是将对象类型实际合并到一个实体中，而是将每个单独的对象类型保存在内存中的一种内部相交类型的列表中。正因为如此，类型检查器需要分配更多的内存，并且将花费更多的时间来检查对象类型是否可分配，因为它需要遍历这个内部列表来逐一检查每个对象类型。<br/><br/>Interfaces 在这方面更好，因为它们实际上将类型定义合并到一个扁平结构中。它们的缺点是它们不能动态创建，比如从泛型中的类型参数创建。这就是为什么使用交集来合并对象仍然是一个需要知道的有用技巧！
 
 export default ({ children }) => (
