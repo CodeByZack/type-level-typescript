@@ -342,6 +342,62 @@ interface Organization extends WithName, WithAge {}
 
 [`interface` 具有更好的性能](https://github.com/microsoft/TypeScript/wiki/Performance#preferring-interfaces-over-intersections)，但只能静态定义。例如，我们无法在 type-level 函数中创建它们。
 
+## 记录类型
+
+就像对象类型一样，记录也表示对象的集合。不同之处在于记录类型的**所有键**的**类型都是相同的**。
+
+一个布尔值记录类型定义如下：
+
+```ts
+type RecordOfBooleans = { [key: string]: boolean };
+```
+
+您可以将其理解为“可分配给 `string` 的任何键都具有 `boolean` 类型的值”。
+
+你也可以使用内置的 `Record` 泛型来定义记录类型：
+
+```ts
+type RecordOfBooleans = Record<string, boolean>;
+```
+
+`Record` 定义如下：
+
+```ts
+type Record<K, V> = { [key in K]: V };
+```
+
+Notice the in keyword. This is using a feature called Mapped Types, which we will cover in more detail in a dedicated chapter. Briefly, in lets us assign a type of value for every key in the union K.
+
+注意 `in` 这个关键字。这是[映射类型](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html)的功能，我们将在专门的章节中更详细地介绍。简而言之， `in` 让我们为联合 `K` 中的每个键分配一种类型的值。
+
+在我们之前的示例中，我们将 `string` 类型作为 `K` 传递，但我们也可以使用 `string` 的联合类型：
+
+```ts
+type InputState = Record<"valid" | "edited" | "focused", boolean>;
+```
+
+或者不使用 `Record`：
+
+```ts
+type InputState = { [key in "valid" | "edited" | "focused"]: boolean };
+```
+
+等价于：
+
+```ts
+type InputState = { valid: boolean; edited: boolean; focused: boolean };
+```
+
+对于 type-level 的程序，记录不算有趣的数据结构，它只能包含单一的类型，而对象却可以包含很多不同的类型。大多时候，我们都只需要**提取**记录中值的类型。我们可以使用 `[string]` 来实现：
+
+```ts
+type ValueType = RecordOfBooleans[string]; // => boolean
+```
+
+我们同时读取所有可分配给 `string` 类型的键。因为它们都包含 `boolean`，所以我们得到了`boolean`类型。
+
+## 辅助函数
+
 
 
 <CodeEditor
