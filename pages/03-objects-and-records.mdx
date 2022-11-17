@@ -472,14 +472,10 @@ type OtherProps = { edited: boolean };
   defaultValue={[tavPracticeArr[13], tavPracticeArr[14]]}
 />
 
-[^1]: This is why Object.keys(...) returns a string[] and not a (keyof Obj)[] by the way. (keyof Obj)[] would be incorrect because Object.keys(...) could return strings that are not assignable to keyof Obj.
-[^2]:
-    The real reason why it's possible to read several properties at once using a union type is because the type level expression User["name"] and the value level expression user["name"] work differently. Instead of finding the key equal to "name" in the type User, TypeScript tries to find every key in User that is assignable to the type "name"!
-    If we write User["name" | "age"], TS will find all keys assignable to the type "name" | "age" and return their value types. Pretty cool right?
+[^1]: 这就是为什么 `Object.keys(...)` 返回一个 `string[]` 而不是 `(keyof Obj)[]` 的原因。 `(keyof Obj)[]` 是不正确的，因为 `Object.keys(...)` 可能会返回**不可分配**给 `keyof Obj` 的字符串.
+[^2]: 使用联合类型可以一次读取多个属性的**真正原因**是 type-level 表达式中 `User["name"]` 和 value-level 表达式中 `user["name"]` 的**工作方式不同**。TypeScript 不是在类型 `User` 中找到等于`“name”`的键，而是尝试在 `User` 中找到**可分配**给类型 `“name”` 的**每个键**！<br/><br/>如果我们写 `User["name" | “age”]`，TS 将找到所有可分配给类型 `"name" | "age"` 的键，并返回它们的值类型。很酷吧？
 
-[^3]: Using too many intersection types can be detrimental to type-checking performance. In the previous chapter (Types are just data), I explained that intersection types were data structures. Instead of actually merging object types into one single entity, they keep each individual object type in memory in a sort of internal list of intersected types. Because of this, the type-checker needs to allocate more memory and will take more time to check if object types are assignable because it will need to traverse this internal list to check each object type one by one.
-
-Interfaces are better in that regard because they actually merge type definitions into one flat structure. Their downside is that they cannot be created dynamically, say from type parameters inside a generic. That's why using intersections to merge objects is still a useful trick to know!
+[^3]: 过度使用 Intersection 类型可能**影响类型检查的性能**. 在上一章（[Types are just data](/02-types-are-just-data)）中，我解释说 Intersection 类型是**数据结构**。它们不是将对象类型实际合并到一个实体中，而是将每个单独的对象类型保存在内存中的一种内部相交类型的列表中。正因为如此，类型检查器需要分配更多的内存，并且将花费更多的时间来检查对象类型是否可分配，因为它需要遍历这个内部列表来逐一检查每个对象类型。<br/><br/>Interfaces 在这方面更好，因为它们实际上将类型定义合并到一个扁平结构中。它们的缺点是它们不能动态创建，比如从泛型中的类型参数创建。这就是为什么使用交集来合并对象仍然是一个需要知道的有用技巧！
 
 export default ({ children }) => (
   <PageLayout prev={PostArrary[0]} next={PostArrary[2]} meta={meta}>
