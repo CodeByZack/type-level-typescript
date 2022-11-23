@@ -17,6 +17,34 @@ export const meta = {};
 
 元组类型定义具有**固定长度**的数组集，每个索引可以包含**不同类型的值**。例如，元组 `[string, number]` 定义了一组**只包含两个值**的数组，其中第一个值是一个 `string`，第二个值是一个 `number` 。
 
+![1](./img/04-arrays-and-tuples/1.svg)
+
+元组类型本质上是**类型列表**！它们可以包含零个、一个或多个值，并且每个值都可以是完全不同的类型。与联合类型不同，元组中的类型是有序的并且可以多次出现。它们看起来就像 JavaScript 的数组，可以当作 type-level 的等价物：
+
+```ts
+type Empty = [];
+type One = [1];
+type Two = [1, "2"]; // types can be different!
+type Three = [1, "2", 1]; // tuples can contain duplicates
+```
+
+### 读取元组索引
+
+就像 JS 数组一样，您可以使用数字索引访问元组中的值：
+
+```ts
+type SomeTuple = ["Bob", 28];
+
+type Name = SomeTuple[0]; // "Bob"
+type Age = SomeTuple[1]; // 28
+```
+
+唯一的区别是元组是由**数字字面量类型**索引的，而不仅仅是数字。
+
+### 读取多个索引
+
+We have seen in Objects & Records that it was possible to simultaneously read several keys from an object using a union of string literals:
+
 <CodeEditor
   height={225}
   defaultValue={[intrPracticeArr[0], intrPracticeArr[1]]}
