@@ -43,7 +43,264 @@ type Age = SomeTuple[1]; // 28
 
 ### 读取多个索引
 
-We have seen in Objects & Records that it was possible to simultaneously read several keys from an object using a union of string literals:
+我们在[对象&记录](/objects-and-records)章节中提到，可以使用字符串字面量的**联合类型**从对象里同时读取多个值：
+
+```ts
+type User = { name: string; age: number; isAdmin: true };
+
+type NameOrAge = User["name" | "age"]; // => string | number
+```
+
+我们可以使用数字字面量的**联合类型**对元组做同样的事情！
+
+```ts
+type SomeTuple = ["Bob", 28, true];
+
+type NameOrAge = SomeTuple[0 | 1]; // => "Bob" | 28
+```
+
+我们可以使用 `T[number]` 语法，同时读取元组 `T` 中所有的索引：
+
+```ts
+type SomeTuple = ["Bob", 28, true];
+
+type Values = SomeTuple[number]; // "Bob" | 28 | true
+```
+
+`T[number]` 本质上是 type-level 上把**列表转为集合**的方法。
+
+还记得我们的技巧吗，使用 `O[keyof O]` 读取了对象类型 `O` 中的所有值，并返回了一个联合类型？ `T[number]` 是对元组类型做同样的事情。
+
+那我们能对元组类型使用 `keyof` 吗？
+
+### 我们能使用 `keyof` 吗？
+
+从技术上来说，是可以的，但是 `keyof` 不仅会返回所有索引，还会返回 `Array` 原型上所有方法的名称，如 `map`、`filter`、`reduce` 等等：
+
+```ts
+type Keys = keyof ["Bob", 28]; // "0" | "1" | "map" | "filter" | ...
+
+const key: Keys = "map"; // ✅ 😬
+```
+
+`keyof` 对于元组类型来说并不是很使用，所以我们很少使用它。
+
+
+### 拼接元组类型
+
+就像 JS 数组一样，我们可以使用扩展运算符 `...` ，将一个元组里的内容**展开**放到另一个元组中。
+
+```ts
+type Tuple1 = [4, 5];
+
+type Tuple2 = [1, 2, 3, ...Tuple1];
+// => [1, 2, 3, 4, 5]
+```
+
+下面是如何将 2 个元组类型合并在一起：
+
+```ts
+type Tuple1 = [1, 2, 3];
+type Tuple2 = [4, 5];
+
+type Tuple3 = [...Tuple1, ...Tuple2];
+// => [1, 2, 3, 4, 5]
+```
+
+用 `...` 创建的元组类型称之为[可变元组类型](https://github.com/microsoft/TypeScript/pull/39094)。它们非常有用！一旦与条件类型等其它功能相结合，它将成为我们工具箱中最为强大的工具！
+
+### 为索引命名
+
+元组语法允许为索引命名。就像对象一样，名称在值之前，名称和值由冒号 `:` 分隔：
+
+```ts
+type User = [firstName: string, lastName: string];
+```
+
+命名索引在**消除**相同类型值的用途的歧义上，非常有用。它们帮助我们理解我们正在处理的数据类型，但它们不会**影响类型检查器**的行为。
+
+
+### 可选的索引
+
+元组类型，一个鲜为人知的特性是它们具有可选索引的能力！要将索引标记为可选，您只需要添加一个问号 `?` 在它之后：
+
+```ts
+type OptTuple = [string, number?];
+//                             ^ optional index!
+
+const tuple1: OptTuple = ["Bob", 28]; // ✅
+const tuple2: OptTuple = ["Bob"]; // ✅
+const tuple3: OptTuple = ["Bob", undefined]; // ✅
+//    ^ we can also explicitly set it to `undefined`
+```
+
+## 数组类型
+
+
+在 TypeScript 中，数组类型非常常见。它们表示**长度未知**的数组集合。它们的所有值必须共享**相同的类型**，但由于这种类型可以是**联合类型**，它们也可以表示**混合值**的数组：
+
+![2](./img/04-arrays-and-tuples/2.svg)
+
+在 TypeScript 中，数组类型可以通过**两种等效的方式**创建：在类型后添加方括号，如 `number[]` 或使用更明确的 `Array<number>` 泛型：
+
+```ts
+type Tags = string[];
+
+type Users = Array<User>; // same as `User[]`
+
+type Bits = (0 | 1)[];
+```
+
+由于数组类型中的所有值都具有相同的类型，因此数组并不包含大量类型级别的信息 —— 它们只是单一类型的包装器。在这方面，它们与 [Records](/objects-and-records#records) 非常相似：
+
+```ts
+// `Arrays` are similar to `Records`:
+
+type BooleanRecord = { [k: string]: boolean };
+type BooleanArray = boolean[];
+```
+
+`BooleanRecord` 和 `BooleanArray`:
+
+- 都有未知数量的键或索引
+- 两者所包含的所有值都共享一种类型
+
+在本课程接下来的章节中，我们将主要关注`对象类型`和`元组类型`。由于它们是我们熟知的旧对象和数组的 type-level 的等价物，我们将能够在我们已经熟悉的算法中使用它们，比如递归循环！
+
+### 提取数组中的类型
+
+就像元组类型一样，我们可以使用 `number` 类型读取数组中值的类型：
+
+```ts
+type SomeArray = boolean[];
+
+type Content = SomeArray[number]; // boolean
+```
+
+### 混合数组类型和元组类型
+
+自从引入 [可变元组类型](https://github.com/microsoft/TypeScript/pull/39094) 后，我们可以使用扩展运算符 `...` 来混合数组类型和元组类型。这允许我们创建表示具有**任意数量值**的数组类型，但在特定索引处具有一些**固定的类型**。
+
+```ts
+// number[] that starts with 0
+type PhoneNumber = [0, ...number[]];
+
+// string[] that ends with a `!`
+type Exclamation = [...string[], "!"];
+
+// non-empty list of strings
+type NonEmpty = [string, ...string[]];
+
+// starts and ends with a zero
+type Padded = [0, ...number[], 0];
+```
+
+这非常适合**捕获**我们的代码的一些**不变量**，而且通常不会影响正确的输入。例如，法国的社会安全号码总是以 `1` 或 `2` 开头。我们可以使用以下类型对其进行编码：
+
+```ts
+type FrenchSocialSecurityNumber = [1 | 2, ...number[]];
+```
+
+Neat!
+
+### 元组类型和函数参数
+
+现在，如果我们结合**可变**元组类型、**命名**索引和**可选**索引，我们可以创建以下类型的元组：
+
+```ts
+type UserTuple = [name: string, age?: number, ...addresses: string[]];
+```
+
+感觉很熟悉吗？它看起来就像函数参数：
+
+```ts
+function createUser(name: string, age?: number, ...addresses: string[]) {}
+```
+
+我们也可以使用我们的 `UserTuple` 来对这个函数进行类型注释：
+
+```ts
+function createUser(...args: UserTuple) {
+  const [name, age, ...addresses] = args;
+  //     ~~~~  ~~~     ~~~~~~~~~
+  //      ^     ^          ^
+  //  string   number   string[]
+}
+
+createUser("Gabriel", 29, "28 Central Ave", "7500 Greenback Ln"); // ✅
+createUser("Bob"); // ✅ `age` is optional and addresses can be empty.
+createUser("Alice", 0, false);
+//                     ~~~~~ ❌ not a `string`!
+```
+
+如果你想在**几个不同的函数之间共享参数类型**，使用元组类型来对函数参数进行类型注释，会很方便：
+
+```ts
+function createUser(...args: UserTuple) {}
+function updateUser(user: User, ...args: UserTuple) {}
+```
+
+或者如果您的函数有**多个函数签名**：
+
+```ts
+type Name =
+  | [first: string, last: string]
+  | [first: string, middle: string, last: string];
+
+function createUser(...name: Name) {}
+
+createUser("Gabriel", "Vergnaud"); // ✅
+createUser("Gabriel", "Léo", "Vergnaud"); // ✅
+createUser("Gabriel"); // ❌
+createUser("Oups", "Too", "Many", "Names"); // ❌
+```
+
+### Leading Rest Elements
+
+你已经看到元组和函数参数看起来十分相似，你可能会认为我们总是可以用元组类型对函数参数进行类型的注释。
+
+在大部分情况下是这样的，但这里有一个特殊情况，你无法使用常规的类型对函数参数进行注释 -- *Leading Rest Elements* 。它是元组类型才具有的特性，在其它元素前使用扩展运算符 `...`。
+
+例如，让我们为 [loadsh](https://lodash.com/) 里的 [zipWith]https://lodash.com/docs/4.17.15#zipWith() 函数添加类型注释。`zipWith(...arrays, zipper)` 接受多个数组和一个 `zipper` 函数，然后调用 zipper 函数遍历每一个数组，并压缩到一个数组里。
+
+下面是为 `zipWith` 添加类型注释的一种可能方式：
+
+```ts
+type ZipWithArgs<I, O> = [
+  ...arrays: I[][], // <- Leading rest element!
+  zipper: (...values: I[]) => O
+];
+
+
+declare function zipWith<I, O>(...args: ZipWithArgs<I, O>): O[];
+// ^ The `declare` keyword lets us define a type 
+// without specifying an implementation
+
+const res = zipWith(
+  [0, 1, 2, 3, 4],
+  [1930, 1987, 1964, 2013, 1993],
+  [149, 170, 186, 155, 180],
+  (index, year, height) => {
+    // index, year, and height are inferred as 
+    // numbers!
+    return [index, year, height];
+  }
+)
+```
+
+您**无法**使用常规参数类型注释此函数，因为 **JavaScript** 语法不支持 *leading rest elements*：
+
+```ts
+declare function zipWith<I, O>(
+  ...arrays: I[][], /* ~~~
+   ^ ❌ A rest parameter must be last in a parameter list */
+  fn: (...values: I[]) => O
+): O[];
+```
+
+好消息是它们在 type-level 里得到了支持！
+
+
 
 <CodeEditor
   height={225}
