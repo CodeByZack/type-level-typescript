@@ -6,6 +6,8 @@ import tavoduction from '!!raw-loader!./01-types-and-values.ts';
 import typeAreDataPracticeStr from '!!raw-loader!./02-types-are-just-data.ts';
 // @ts-ignore
 import objectAndRecordsPracticeStr from '!!raw-loader!./03-objects-and-records.ts';
+// @ts-ignore
+import arrayAndTuplePracticeStr from '!!raw-loader!./04-arrays-and-tuples.ts';
 
 const spliter = '// ==============================================';
 
@@ -19,3 +21,4 @@ export const intrPracticeArr = splitPracticeStr(introduction);
 export const tavPracticeArr = splitPracticeStr(tavoduction);
 export const typeAreDataPracticeArr = splitPracticeStr(typeAreDataPracticeStr);
 export const objectAndRecordsPracticeArr = splitPracticeStr(objectAndRecordsPracticeStr);
+export const arrayAndTuplePracticeArr = splitPracticeStr(arrayAndTuplePracticeStr);

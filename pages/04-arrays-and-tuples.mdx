@@ -2,7 +2,7 @@ import PageLayout from '../layouts/PageLayout';
 import CodeEditor from '../components/CodeEditor';
 import ItalicTitle from '../components/ItalicTitle';
 import { PostCards } from '../components/Card';
-import { intrPracticeArr } from '../practice/index';
+import { arrayAndTuplePracticeArr } from '../practice/index';
 import { PostArrary } from '../postInfos';
 
 export const meta = {};
@@ -353,6 +353,7 @@ declare function zipWith<I, O>(
   我喜欢我们在使用 zipWith 时不需要再次编写类型注释，并且仍然能获得完整的类型提示，因为我们已经告诉了 TypeScript 如何为我们推断类型！
 </details>
 
+
 <details> 
  <summary>🤔 **zipWith 的实现是什么样的？**</summary>
 
@@ -377,9 +378,45 @@ declare function zipWith<I, O>(
   ```
 </details>
 
+
+## 总结
+
+在本章中，我们了解了 type-level 中真正数组——**元组**。我们已经学习了如何创建它们，如何读取它们的内容，以及如何合并它们以形成更大的元组！
+
+我们还讨论了数组类型，它表示具有未知数量的值的数组，其中的值都**共享相同的类型**。数组和元组是**互补的**——我们可以在可变元组中将它们混合在一起。
+
+## 练习时间！💪
+
+与往常一样，让我们​​完成一些 challenges ，让我们的新技能发挥作用！
+
+
 <CodeEditor
-  height={225}
-  defaultValue={[intrPracticeArr[0], intrPracticeArr[1]]}
+  height={480}
+  defaultValue={[arrayAndTuplePracticeArr[0], arrayAndTuplePracticeArr[1]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[arrayAndTuplePracticeArr[2], arrayAndTuplePracticeArr[3]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[arrayAndTuplePracticeArr[4], arrayAndTuplePracticeArr[5]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[arrayAndTuplePracticeArr[6], arrayAndTuplePracticeArr[7]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[arrayAndTuplePracticeArr[8], arrayAndTuplePracticeArr[9]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[arrayAndTuplePracticeArr[10], arrayAndTuplePracticeArr[11]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[arrayAndTuplePracticeArr[12], arrayAndTuplePracticeArr[13]]}
 />
 
 
