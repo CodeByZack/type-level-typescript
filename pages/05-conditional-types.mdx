@@ -1,0 +1,140 @@
+import PageLayout from '../layouts/PageLayout';
+import CodeEditor from '../components/CodeEditor';
+import ItalicTitle from '../components/ItalicTitle';
+import { PostCards } from '../components/Card';
+import { arrayAndTuplePracticeArr } from '../practice/index';
+import { PostArrary } from '../postInfos';
+
+export const meta = {};
+
+# 使用条件类型实现代码分支
+
+在了解了[前](/types-are-just-data)[三](/objects-and-records)[章](/arrays-and-tuples)中我们可以使用的多种类型之后，是时候实现我们的**第一个 type-level 算法了**！我们终于可以用类型语言编写一些实际代码了。耶！🎉🎉🎉
+
+
+
+
+
+<details> 
+ <summary>🤔 **如果我的数组包含不同类型的值怎么办？**</summary>
+
+  您可能已经注意到我们对 `zipWith` 进行类型注释的方式有点……**简单化**。
+
+  我们希望所有数组都包含相同类型的值，但我们的实际代码肯定也需要压缩**不同类型**的数组：
+
+  ```ts
+  /**
+  *   With arrays containing different types, We need to
+  *   tell TypeScript to consider them as arrays of unions
+  *                           👇                             **/
+  const zipped = zipWith<number | string, string>(
+    [1, 2, 3],
+    ["a", "b", "c"],
+    (num, char) => {
+      /**  👆
+      *   both `num` and `char` are inferred as `number | string`.
+      *   Ideally, `num` would be of type `number` and `char`
+      *   of type `string`.                                     **/
+      return "😭";
+    }
+  );
+  ```
+
+  **但是我们怎样才能使它正常工作呢？**
+
+  好吧，我们只需要使用一些**高级 type-level** 的 TypeScript ！
+
+  如果下面的代码块暂时不能理解，请**不要担心**。在接下来的章节中，您将学习如何**读写**这些复杂类型。敬请关注 😊
+
+  ```ts
+  declare function zipWith<Lists extends [any[], ...any[]], O>(
+    ...args: ZipWithArgs<Lists, O>
+  ): O[];
+
+  type ZipWithArgs<Lists extends any[][], O> = [
+    ...arrays: Lists,
+    zipper: (...values: ComputeValues<Lists>) => O
+  ];
+
+  type ComputeValues<Lists> = {
+    [I in keyof Lists]: Lists[I] extends (infer Value)[]
+      ? Value
+      : never
+  }
+  ```
+
+  。。。
+
+  我喜欢我们在使用 zipWith 时不需要再次编写类型注释，并且仍然能获得完整的类型提示，因为我们已经告诉了 TypeScript 如何为我们推断类型！
+</details>
+
+
+<details> 
+ <summary>🤔 **zipWith 的实现是什么样的？**</summary>
+
+  本章重点介绍类型，但如果您好奇的话，这里有一个 `zipWith` 函数的可能实现：
+
+  ```ts
+  function zipWith<I, O>(...args: ZipWithArgs<I, O>): O[] {
+    // retrieve arrays and zipper arguments
+    const arrays = args.slice(0, length - 1) as I[][];
+    const zipper = args[args.length - 1] as (...values: I[]) => O;
+
+    // get the minimum length in the array of arrays
+    const minLength = Math.min(...arrays.map((a) => a.length));
+
+    // run the zipper function for each index
+    let output: O[] = Array.from({ length: minLength });
+    for (let i = 0; i < minLength; i++) {
+      output[i] = zipper(...arrays.map((a) => a[i]));
+    }
+    return output;
+  }
+  ```
+</details>
+
+
+## 总结
+
+在本章中，我们了解了 type-level 中真正数组——**元组**。我们已经学习了如何创建它们，如何读取它们的内容，以及如何合并它们以形成更大的元组！
+
+我们还讨论了数组类型，它表示具有未知数量的值的数组，其中的值都**共享相同的类型**。数组和元组是**互补的**——我们可以在可变元组中将它们混合在一起。
+
+## 练习时间！💪
+
+与往常一样，让我们​​完成一些 challenges ，让我们的新技能发挥作用！
+
+
+<CodeEditor
+  height={480}
+  defaultValue={[arrayAndTuplePracticeArr[0], arrayAndTuplePracticeArr[1]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[arrayAndTuplePracticeArr[2], arrayAndTuplePracticeArr[3]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[arrayAndTuplePracticeArr[4], arrayAndTuplePracticeArr[5]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[arrayAndTuplePracticeArr[6], arrayAndTuplePracticeArr[7]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[arrayAndTuplePracticeArr[8], arrayAndTuplePracticeArr[9]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[arrayAndTuplePracticeArr[10], arrayAndTuplePracticeArr[11]]}
+/>
+<CodeEditor
+  height={480}
+  defaultValue={[arrayAndTuplePracticeArr[12], arrayAndTuplePracticeArr[13]]}
+/>
+
+
+export default ({ children }) => (
+  <PageLayout next={PostArrary[1]} meta={meta}>{children}</PageLayout>
+);
